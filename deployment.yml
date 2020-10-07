@@ -27,7 +27,7 @@ spec:
         app: nxd
     spec:
       containers:
-        - name: nyaa_x_discord
+        - name: nyaa-x-discord
           image: rl404/nyaa-x-discord:latest
           imagePullPolicy: IfNotPresent
           envFrom:
