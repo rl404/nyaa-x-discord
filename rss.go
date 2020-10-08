@@ -40,7 +40,7 @@ func getCleanFeed(user User) (feeds []Feed, err error) {
 
 		feeds = append(feeds, Feed{
 			Title:      item.Title,
-			Link:       item.Link,
+			Link:       item.GUID,
 			CategoryID: item.Extensions["nyaa"]["categoryId"][0].Value,
 			Category:   item.Extensions["nyaa"]["category"][0].Value,
 			Size:       item.Extensions["nyaa"]["size"][0].Value,
