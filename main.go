@@ -53,7 +53,7 @@ func feedJob(ctx context.Context) {
 	}
 
 	for _, user := range users {
-		fmt.Println(time.Now().Format("15:03:04"), "checking ", user.UserID)
+		// Check user's feed.
 		checkFeed(user)
 
 		// Sleep to prevent spamming.

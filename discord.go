@@ -131,8 +131,13 @@ func sendFeed(feeds []Feed, user User) {
 		}
 
 		msg.Fields = fields
-		discord.ChannelMessageSendEmbed(user.ChannelID, &msg)
 		feeds = feeds[limit:]
+
+		_, err := discord.ChannelMessageSendEmbed(user.ChannelID, &msg)
+		if err != nil {
+			fmt.Println(user.UserID, err)
+			return
+		}
 	}
 }
 

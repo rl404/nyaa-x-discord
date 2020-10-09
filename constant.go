@@ -30,18 +30,18 @@ var (
 	invalidCmd         = "Invalid command. See **!help** for more information."
 )
 
-type KeyValue struct {
+type keyValue struct {
 	Key   string
 	Value string
 }
 
-var filters = []KeyValue{
+var filters = []keyValue{
 	{Key: "0", Value: "No filter"},
 	{Key: "1", Value: "No remakes"},
 	{Key: "2", Value: "Trusted only"},
 }
 
-var categories = []KeyValue{
+var categories = []keyValue{
 	{Key: "0_0", Value: "All categories"},
 	{Key: "1_0", Value: "Anime"},
 	{Key: "1_1", Value: "Anime Music Video"},

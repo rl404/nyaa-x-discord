@@ -9,7 +9,7 @@ func ellipsis(str string, length int) string {
 }
 
 // keyValueToMessage to convert key value model to string.
-func keyValueToMessage(keyValue []KeyValue) (msg string) {
+func keyValueToMessage(keyValue []keyValue) (msg string) {
 	for _, kv := range keyValue {
 		msg += kv.Key + " : " + kv.Value + "\n"
 	}
@@ -17,7 +17,7 @@ func keyValueToMessage(keyValue []KeyValue) (msg string) {
 }
 
 // getValueFromKey to get value with key.
-func getValueFromKey(keyValue []KeyValue, key string) string {
+func getValueFromKey(keyValue []keyValue, key string) string {
 	for _, kv := range keyValue {
 		if kv.Key == key {
 			return kv.Value
