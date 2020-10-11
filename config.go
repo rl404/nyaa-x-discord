@@ -29,8 +29,8 @@ const (
 	EnvPath = ".env"
 	// EnvPrefix is environment
 	EnvPrefix = "NXD"
-	// DefaulInterval is default scheduler check time (5 minutes).
-	DefaulInterval = 5
+	// DefaulInterval is default scheduler check time (10 minutes).
+	DefaulInterval = 10
 	// DefaultTimezone is default timezone.
 	DefaultTimezone = "UTC"
 )

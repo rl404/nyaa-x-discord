@@ -3,7 +3,7 @@ version: '2.4'
 services:
   nyaa-x-discord:
     container_name: nyaa_x_discord
-    image: nyaa-x-discord:0.1.1
+    image: nyaa-x-discord:0.1.2
     build: .
     restart: unless-stopped
     env_file: .env

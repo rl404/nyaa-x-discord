@@ -277,7 +277,7 @@ func handleQuery(s *discordgo.Session, user User, args []string) {
 	// Show category list.
 	if len(args) == 1 {
 		if len(user.Queries) == 0 {
-			msg.Description = "Empty query. Go create a new one."
+			msg.Description = "**Queries**```Empty query. Go create a new one.```"
 		} else {
 			msg.Description = "**Queries**```"
 			for i, q := range user.Queries {
