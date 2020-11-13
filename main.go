@@ -19,11 +19,11 @@ func main() {
 
 	// Init discord client.
 	err = initDiscord()
-	defer discord.Close()
 	if err != nil {
 		fmt.Println("discord -", err)
 		return
 	}
+	defer discord.Close()
 
 	// Start Nyaa RSS checker and listening discord bot.
 	startScheduler()
