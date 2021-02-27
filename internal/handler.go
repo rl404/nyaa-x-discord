@@ -13,8 +13,6 @@ import (
 // Handler contains all handler function.
 type Handler interface {
 	Handler() func(*discordgo.Session, *discordgo.MessageCreate)
-	PrefixCheck(cmd string) bool
-	CleanPrefix(cmd string) string
 	HandleFirstTime(session *discordgo.Session, msg *discordgo.MessageCreate) error
 	HandlePing(session *discordgo.Session, channelID string) error
 	HandleHelp(session *discordgo.Session, user User) error
@@ -46,12 +44,12 @@ func (h *handler) Handler() func(*discordgo.Session, *discordgo.MessageCreate) {
 		}
 
 		// Command and prefix check.
-		if h.PrefixCheck(m.Content) {
+		if h.prefixCheck(m.Content) {
 			return
 		}
 
 		// Remove prefix.
-		m.Content = h.CleanPrefix(m.Content)
+		m.Content = h.cleanPrefix(m.Content)
 
 		// Get user data.
 		user, exist, err := h.db.GetUser(m.Author.ID)
@@ -95,13 +93,11 @@ func (h *handler) Handler() func(*discordgo.Session, *discordgo.MessageCreate) {
 	}
 }
 
-// PrefixCheck to check if prefix valid.
-func (h *handler) PrefixCheck(cmd string) bool {
+func (h *handler) prefixCheck(cmd string) bool {
 	return len(cmd) <= len(h.prefix) || cmd[:len(h.prefix)] != h.prefix
 }
 
-// CleanPrefix to remove prefix from command.
-func (h *handler) CleanPrefix(cmd string) string {
+func (h *handler) cleanPrefix(cmd string) string {
 	return cmd[len(h.prefix):]
 }
 
