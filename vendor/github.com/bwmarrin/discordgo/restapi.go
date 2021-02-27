@@ -154,10 +154,10 @@ func (s *Session) RequestWithLockedBucket(method, urlStr, contentType string, b 
 			s.log(LogError, "rate limit unmarshal error, %s", err)
 			return
 		}
-		s.log(LogInformational, "Rate Limiting %s, retry in %d", urlStr, rl.RetryAfter)
-		s.handleEvent(rateLimitEventType, RateLimit{TooManyRequests: &rl, URL: urlStr})
+		s.log(LogInformational, "Rate Limiting %s, retry in %v", urlStr, rl.RetryAfter)
+		s.handleEvent(rateLimitEventType, &RateLimit{TooManyRequests: &rl, URL: urlStr})
 
-		time.Sleep(rl.RetryAfter * time.Millisecond)
+		time.Sleep(rl.RetryAfter)
 		// we can make the above smarter
 		// this method can cause longer delays than required
 
@@ -465,7 +465,7 @@ func (s *Session) UserGuildSettingsEdit(guildID string, settings *UserGuildSetti
 //
 // NOTE: This function is now deprecated and will be removed in the future.
 // Please see the same function inside state.go
-func (s *Session) UserChannelPermissions(userID, channelID string) (apermissions int, err error) {
+func (s *Session) UserChannelPermissions(userID, channelID string) (apermissions int64, err error) {
 	// Try to just get permissions from state.
 	apermissions, err = s.State.UserChannelPermissions(userID, channelID)
 	if err == nil {
@@ -502,14 +502,12 @@ func (s *Session) UserChannelPermissions(userID, channelID string) (apermissions
 		}
 	}
 
-	return memberPermissions(guild, channel, member), nil
+	return memberPermissions(guild, channel, userID, member.Roles), nil
 }
 
 // Calculates the permissions for a member.
 // https://support.discord.com/hc/en-us/articles/206141927-How-is-the-permission-hierarchy-structured-
-func memberPermissions(guild *Guild, channel *Channel, member *Member) (apermissions int) {
-	userID := member.User.ID
-
+func memberPermissions(guild *Guild, channel *Channel, userID string, roles []string) (apermissions int64) {
 	if userID == guild.OwnerID {
 		apermissions = PermissionAll
 		return
@@ -523,7 +521,7 @@ func memberPermissions(guild *Guild, channel *Channel, member *Member) (apermiss
 	}
 
 	for _, role := range guild.Roles {
-		for _, roleID := range member.Roles {
+		for _, roleID := range roles {
 			if role.ID == roleID {
 				apermissions |= role.Permissions
 				break
@@ -544,13 +542,11 @@ func memberPermissions(guild *Guild, channel *Channel, member *Member) (apermiss
 		}
 	}
 
-	denies := 0
-	allows := 0
-
+	var denies, allows int64
 	// Member overwrites can override role overrides, so do two passes
 	for _, overwrite := range channel.PermissionOverwrites {
-		for _, roleID := range member.Roles {
-			if overwrite.Type == "role" && roleID == overwrite.ID {
+		for _, roleID := range roles {
+			if overwrite.Type == PermissionOverwriteTypeRole && roleID == overwrite.ID {
 				denies |= overwrite.Deny
 				allows |= overwrite.Allow
 				break
@@ -562,7 +558,7 @@ func memberPermissions(guild *Guild, channel *Channel, member *Member) (apermiss
 	apermissions |= allows
 
 	for _, overwrite := range channel.PermissionOverwrites {
-		if overwrite.Type == "member" && overwrite.ID == userID {
+		if overwrite.Type == PermissionOverwriteTypeMember && overwrite.ID == userID {
 			apermissions &= ^overwrite.Deny
 			apermissions |= overwrite.Allow
 			break
@@ -695,6 +691,19 @@ func (s *Session) GuildBanCreate(guildID, userID string, days int) (err error) {
 	return s.GuildBanCreateWithReason(guildID, userID, "", days)
 }
 
+// GuildBan finds ban by given guild and user id and returns GuildBan structure
+func (s *Session) GuildBan(guildID, userID string) (st *GuildBan, err error) {
+
+	body, err := s.RequestWithBucketID("GET", EndpointGuildBan(guildID, userID), nil, EndpointGuildBan(guildID, userID))
+	if err != nil {
+		return
+	}
+
+	err = unmarshal(body, &st)
+
+	return
+}
+
 // GuildBanCreateWithReason bans the given user from the given guild also providing a reaso.
 // guildID   : The ID of a Guild.
 // userID    : The ID of a User
@@ -706,7 +715,7 @@ func (s *Session) GuildBanCreateWithReason(guildID, userID, reason string, days 
 
 	queryParams := url.Values{}
 	if days > 0 {
-		queryParams.Set("delete-message-days", strconv.Itoa(days))
+		queryParams.Set("delete_message_days", strconv.Itoa(days))
 	}
 	if reason != "" {
 		queryParams.Set("reason", reason)
@@ -834,10 +843,6 @@ func (s *Session) GuildMemberEdit(guildID, userID string, roles []string) (err e
 	}{roles}
 
 	_, err = s.RequestWithBucketID("PATCH", EndpointGuildMember(guildID, userID), data, EndpointGuildMember(guildID, ""))
-	if err != nil {
-		return
-	}
-
 	return
 }
 
@@ -848,16 +853,11 @@ func (s *Session) GuildMemberEdit(guildID, userID string, roles []string) (err e
 // NOTE : I am not entirely set on the name of this function and it may change
 // prior to the final 1.0.0 release of Discordgo
 func (s *Session) GuildMemberMove(guildID string, userID string, channelID *string) (err error) {
-
 	data := struct {
 		ChannelID *string `json:"channel_id"`
 	}{channelID}
 
 	_, err = s.RequestWithBucketID("PATCH", EndpointGuildMember(guildID, userID), data, EndpointGuildMember(guildID, ""))
-	if err != nil {
-		return
-	}
-
 	return
 }
 
@@ -865,6 +865,7 @@ func (s *Session) GuildMemberMove(guildID string, userID string, channelID *stri
 // guildID   : The ID of a guild
 // userID    : The ID of a user
 // userID    : The ID of a user or "@me" which is a shortcut of the current user ID
+// nickname  : The nickname of the member, "" will reset their nickname
 func (s *Session) GuildMemberNickname(guildID, userID, nickname string) (err error) {
 
 	data := struct {
@@ -874,6 +875,32 @@ func (s *Session) GuildMemberNickname(guildID, userID, nickname string) (err err
 	if userID == "@me" {
 		userID += "/nick"
 	}
+
+	_, err = s.RequestWithBucketID("PATCH", EndpointGuildMember(guildID, userID), data, EndpointGuildMember(guildID, ""))
+	return
+}
+
+// GuildMemberMute server mutes a guild member
+//  guildID   : The ID of a Guild.
+//  userID    : The ID of a User.
+//  mute    : boolean value for if the user should be muted
+func (s *Session) GuildMemberMute(guildID string, userID string, mute bool) (err error) {
+	data := struct {
+		Mute bool `json:"mute"`
+	}{mute}
+
+	_, err = s.RequestWithBucketID("PATCH", EndpointGuildMember(guildID, userID), data, EndpointGuildMember(guildID, ""))
+	return
+}
+
+// GuildMemberDeafen server deafens a guild member
+//  guildID   : The ID of a Guild.
+//  userID    : The ID of a User.
+//  deaf    : boolean value for if the user should be deafened
+func (s *Session) GuildMemberDeafen(guildID string, userID string, deaf bool) (err error) {
+	data := struct {
+		Deaf bool `json:"deaf"`
+	}{deaf}
 
 	_, err = s.RequestWithBucketID("PATCH", EndpointGuildMember(guildID, userID), data, EndpointGuildMember(guildID, ""))
 	return
@@ -1021,7 +1048,7 @@ func (s *Session) GuildRoleCreate(guildID string) (st *Role, err error) {
 // hoist     : Whether to display the role's users separately.
 // perm      : The permissions for the role.
 // mention   : Whether this role is mentionable
-func (s *Session) GuildRoleEdit(guildID, roleID, name string, color int, hoist bool, perm int, mention bool) (st *Role, err error) {
+func (s *Session) GuildRoleEdit(guildID, roleID, name string, color int, hoist bool, perm int64, mention bool) (st *Role, err error) {
 
 	// Prevent sending a color int that is too big.
 	if color > 0xFFFFFF {
@@ -1030,11 +1057,11 @@ func (s *Session) GuildRoleEdit(guildID, roleID, name string, color int, hoist b
 	}
 
 	data := struct {
-		Name        string `json:"name"`        // The role's name (overwrites existing)
-		Color       int    `json:"color"`       // The color the role should have (as a decimal, not hex)
-		Hoist       bool   `json:"hoist"`       // Whether to display the role's users separately
-		Permissions int    `json:"permissions"` // The overall permissions number of the role (overwrites existing)
-		Mentionable bool   `json:"mentionable"` // Whether this role is mentionable
+		Name        string `json:"name"`               // The role's name (overwrites existing)
+		Color       int    `json:"color"`              // The color the role should have (as a decimal, not hex)
+		Hoist       bool   `json:"hoist"`              // Whether to display the role's users separately
+		Permissions int64  `json:"permissions,string"` // The overall permissions number of the role (overwrites existing)
+		Mentionable bool   `json:"mentionable"`        // Whether this role is mentionable
 	}{name, color, hoist, perm, mention}
 
 	body, err := s.RequestWithBucketID("PATCH", EndpointGuildRole(guildID, roleID), data, EndpointGuildRole(guildID, ""))
@@ -1613,6 +1640,17 @@ func (s *Session) ChannelMessageSendEmbed(channelID string, embed *MessageEmbed)
 	})
 }
 
+// ChannelMessageSendReply sends a message to the given channel with reference data.
+// channelID : The ID of a Channel.
+// content   : The message to send.
+// reference : The message reference to send.
+func (s *Session) ChannelMessageSendReply(channelID string, content string, reference *MessageReference) (*Message, error) {
+	return s.ChannelMessageSendComplex(channelID, &MessageSend{
+		Content:   content,
+		Reference: reference,
+	})
+}
+
 // ChannelMessageEdit edits an existing message, replacing it entirely with
 // the given content.
 // channelID  : The ID of a Channel
@@ -1769,13 +1807,13 @@ func (s *Session) ChannelInviteCreate(channelID string, i Invite) (st *Invite, e
 // ChannelPermissionSet creates a Permission Override for the given channel.
 // NOTE: This func name may changed.  Using Set instead of Create because
 // you can both create a new override or update an override with this function.
-func (s *Session) ChannelPermissionSet(channelID, targetID, targetType string, allow, deny int) (err error) {
+func (s *Session) ChannelPermissionSet(channelID, targetID string, targetType PermissionOverwriteType, allow, deny int64) (err error) {
 
 	data := struct {
-		ID    string `json:"id"`
-		Type  string `json:"type"`
-		Allow int    `json:"allow"`
-		Deny  int    `json:"deny"`
+		ID    string                  `json:"id"`
+		Type  PermissionOverwriteType `json:"type"`
+		Allow int64                   `json:"allow,string"`
+		Deny  int64                   `json:"deny,string"`
 	}{targetID, targetType, allow, deny}
 
 	_, err = s.RequestWithBucketID("PUT", EndpointChannelPermission(channelID, targetID), data, EndpointChannelPermission(channelID, ""))
@@ -1787,6 +1825,43 @@ func (s *Session) ChannelPermissionSet(channelID, targetID, targetType string, a
 func (s *Session) ChannelPermissionDelete(channelID, targetID string) (err error) {
 
 	_, err = s.RequestWithBucketID("DELETE", EndpointChannelPermission(channelID, targetID), nil, EndpointChannelPermission(channelID, ""))
+	return
+}
+
+// ChannelMessageCrosspost cross posts a message in a news channel to followers
+// of the channel
+// channelID   : The ID of a Channel
+// messageID   : The ID of a Message
+func (s *Session) ChannelMessageCrosspost(channelID, messageID string) (st *Message, err error) {
+
+	endpoint := EndpointChannelMessageCrosspost(channelID, messageID)
+
+	body, err := s.RequestWithBucketID("POST", endpoint, nil, endpoint)
+	if err != nil {
+		return
+	}
+
+	err = unmarshal(body, &st)
+	return
+}
+
+// ChannelNewsFollow follows a news channel in the targetID
+// channelID   : The ID of a News Channel
+// targetID    : The ID of a Channel where the News Channel should post to
+func (s *Session) ChannelNewsFollow(channelID, targetID string) (st *ChannelFollow, err error) {
+
+	endpoint := EndpointChannelFollow(channelID)
+
+	data := struct {
+		WebhookChannelID string `json:"webhook_channel_id"`
+	}{targetID}
+
+	body, err := s.RequestWithBucketID("POST", endpoint, data, endpoint)
+	if err != nil {
+		return
+	}
+
+	err = unmarshal(body, &st)
 	return
 }
 
@@ -2130,6 +2205,19 @@ func (s *Session) MessageReactionRemove(channelID, messageID, emojiID, userID st
 func (s *Session) MessageReactionsRemoveAll(channelID, messageID string) error {
 
 	_, err := s.RequestWithBucketID("DELETE", EndpointMessageReactionsAll(channelID, messageID), nil, EndpointMessageReactionsAll(channelID, messageID))
+
+	return err
+}
+
+// MessageReactionsRemoveEmoji deletes all reactions of a certain emoji from a message
+// channelID : The channel ID
+// messageID : The message ID
+// emojiID   : The emoji ID
+func (s *Session) MessageReactionsRemoveEmoji(channelID, messageID, emojiID string) error {
+
+	// emoji such as  #⃣ need to have # escaped
+	emojiID = strings.Replace(emojiID, "#", "%23", -1)
+	_, err := s.RequestWithBucketID("DELETE", EndpointMessageReactions(channelID, messageID, emojiID), nil, EndpointMessageReactions(channelID, messageID, emojiID))
 
 	return err
 }

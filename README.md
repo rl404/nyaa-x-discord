@@ -17,12 +17,18 @@ This bot is created because my favorite anime fansubs group has disbanded and I 
     ```bash
     git clone github.com/rl404/nyaa-x-discord
     ```
-2. Rename `sample.env` to `.env` and modify according to your configuration.
+2. Modify `.env` according to your configuration.
 3. Run.
     ```bash
-    go run .
-    # or
-    docker-compose up
+    # for bot
+    make bot
+    # for checker
+    make cron
+
+    # or using docker (contain bot and checker)
+    make docker
+    # to stop docker
+    make docker-stop
     ```
 4. Invite the bot to your server.
 5. DM the bot `!ping`.

@@ -25,6 +25,11 @@ var ErrNilState = errors.New("state not instantiated, please use discordgo.New()
 // requested is not found
 var ErrStateNotFound = errors.New("state cache not found")
 
+// ErrMessageIncompletePermissions is returned when the message
+// requested for permissions does not contain enough data to
+// generate the permissions.
+var ErrMessageIncompletePermissions = errors.New("message incomplete, unable to determine permissions")
+
 // A State contains the current known state.
 // As discord sends this in a READY blob, it seems reasonable to simply
 // use that struct as the data store.
@@ -195,13 +200,9 @@ func (s *State) PresenceAdd(guildID string, presence *Presence) error {
 			//guild.Presences[i] = presence
 
 			//Update status
-			guild.Presences[i].Game = presence.Game
-			guild.Presences[i].Roles = presence.Roles
+			guild.Presences[i].Activities = presence.Activities
 			if presence.Status != "" {
 				guild.Presences[i].Status = presence.Status
-			}
-			if presence.Nick != "" {
-				guild.Presences[i].Nick = presence.Nick
 			}
 
 			//Update the optionally sent user information
@@ -727,6 +728,26 @@ func (s *State) voiceStateUpdate(update *VoiceStateUpdate) error {
 	return nil
 }
 
+// VoiceState gets a VoiceState by guild and user ID.
+func (s *State) VoiceState(guildID, userID string) (*VoiceState, error) {
+	if s == nil {
+		return nil, ErrNilState
+	}
+
+	guild, err := s.Guild(guildID)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, state := range guild.VoiceStates {
+		if state.UserID == userID {
+			return state, nil
+		}
+	}
+
+	return nil, ErrStateNotFound
+}
+
 // Message gets a message by channel and message ID.
 func (s *State) Message(channelID, messageID string) (*Message, error) {
 	if s == nil {
@@ -916,6 +937,13 @@ func (s *State) OnInterface(se *Session, i interface{}) (err error) {
 		}
 	case *VoiceStateUpdate:
 		if s.TrackVoice {
+			var old *VoiceState
+			old, err = s.VoiceState(t.GuildID, t.UserID)
+			if err == nil {
+				oldCopy := *old
+				t.BeforeUpdate = &oldCopy
+			}
+
 			err = s.voiceStateUpdate(t)
 		}
 	case *PresenceUpdate:
@@ -934,24 +962,12 @@ func (s *State) OnInterface(se *Session, i interface{}) (err error) {
 				// Member not found; this is a user coming online
 				m = &Member{
 					GuildID: t.GuildID,
-					Nick:    t.Nick,
 					User:    t.User,
-					Roles:   t.Roles,
 				}
-
 			} else {
-
-				if t.Nick != "" {
-					m.Nick = t.Nick
-				}
-
 				if t.User.Username != "" {
 					m.User.Username = t.User.Username
 				}
-
-				// PresenceUpdates always contain a list of roles, so there's no need to check for an empty list here
-				m.Roles = t.Roles
-
 			}
 
 			err = s.MemberAdd(m)
@@ -965,7 +981,7 @@ func (s *State) OnInterface(se *Session, i interface{}) (err error) {
 // UserChannelPermissions returns the permission of a user in a channel.
 // userID    : The ID of the user to calculate permissions for.
 // channelID : The ID of the channel to calculate permission for.
-func (s *State) UserChannelPermissions(userID, channelID string) (apermissions int, err error) {
+func (s *State) UserChannelPermissions(userID, channelID string) (apermissions int64, err error) {
 	if s == nil {
 		return 0, ErrNilState
 	}
@@ -980,17 +996,36 @@ func (s *State) UserChannelPermissions(userID, channelID string) (apermissions i
 		return
 	}
 
-	if userID == guild.OwnerID {
-		apermissions = PermissionAll
-		return
-	}
-
 	member, err := s.Member(guild.ID, userID)
 	if err != nil {
 		return
 	}
 
-	return memberPermissions(guild, channel, member), nil
+	return memberPermissions(guild, channel, userID, member.Roles), nil
+}
+
+// MessagePermissions returns the permissions of the author of the message
+// in the channel in which it was sent.
+func (s *State) MessagePermissions(message *Message) (apermissions int64, err error) {
+	if s == nil {
+		return 0, ErrNilState
+	}
+
+	if message.Author == nil || message.Member == nil {
+		return 0, ErrMessageIncompletePermissions
+	}
+
+	channel, err := s.Channel(message.ChannelID)
+	if err != nil {
+		return
+	}
+
+	guild, err := s.Guild(channel.GuildID)
+	if err != nil {
+		return
+	}
+
+	return memberPermissions(guild, channel, message.Author.ID, message.Member.Roles), nil
 }
 
 // UserColor returns the color of a user in a channel.
@@ -1018,16 +1053,50 @@ func (s *State) UserColor(userID, channelID string) int {
 		return 0
 	}
 
+	return firstRoleColorColor(guild, member.Roles)
+}
+
+// MessageColor returns the color of the author's name as displayed
+// in the client associated with this message.
+func (s *State) MessageColor(message *Message) int {
+	if s == nil {
+		return 0
+	}
+
+	if message.Member == nil || message.Member.Roles == nil {
+		return 0
+	}
+
+	channel, err := s.Channel(message.ChannelID)
+	if err != nil {
+		return 0
+	}
+
+	guild, err := s.Guild(channel.GuildID)
+	if err != nil {
+		return 0
+	}
+
+	return firstRoleColorColor(guild, message.Member.Roles)
+}
+
+func firstRoleColorColor(guild *Guild, memberRoles []string) int {
 	roles := Roles(guild.Roles)
 	sort.Sort(roles)
 
 	for _, role := range roles {
-		for _, roleID := range member.Roles {
+		for _, roleID := range memberRoles {
 			if role.ID == roleID {
 				if role.Color != 0 {
 					return role.Color
 				}
 			}
+		}
+	}
+
+	for _, role := range roles {
+		if role.ID == guild.ID {
+			return role.Color
 		}
 	}
 

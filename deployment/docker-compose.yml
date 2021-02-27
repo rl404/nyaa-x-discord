@@ -1,0 +1,21 @@
+version: "2.4"
+
+services:
+  nxd:
+    container_name: nxd
+    image: nyaa-x-discord:latest
+    command: /nxd bot
+    build:
+      context: ./..
+      dockerfile: ./build/package/Dockerfile
+    env_file: ./../.env
+    restart: unless-stopped
+  nxd_cron:
+    container_name: nxd_cron
+    image: nyaa-x-discord:latest
+    command: /nxd cron
+    build:
+      context: ./..
+      dockerfile: ./build/package/Dockerfile
+    env_file: ./../.env
+    restart: unless-stopped

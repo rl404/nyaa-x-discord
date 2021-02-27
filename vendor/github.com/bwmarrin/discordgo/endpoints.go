@@ -14,7 +14,7 @@ package discordgo
 import "strconv"
 
 // APIVersion is the Discord API version used for the REST and Websocket API.
-var APIVersion = "6"
+var APIVersion = "8"
 
 // Known Discord API Endpoints.
 var (
@@ -90,7 +90,8 @@ var (
 	EndpointGuildRoles           = func(gID string) string { return EndpointGuilds + gID + "/roles" }
 	EndpointGuildRole            = func(gID, rID string) string { return EndpointGuilds + gID + "/roles/" + rID }
 	EndpointGuildInvites         = func(gID string) string { return EndpointGuilds + gID + "/invites" }
-	EndpointGuildEmbed           = func(gID string) string { return EndpointGuilds + gID + "/embed" }
+	EndpointGuildWidget          = func(gID string) string { return EndpointGuilds + gID + "/widget" }
+	EndpointGuildEmbed           = EndpointGuildWidget
 	EndpointGuildPrune           = func(gID string) string { return EndpointGuilds + gID + "/prune" }
 	EndpointGuildIcon            = func(gID, hash string) string { return EndpointCDNIcons + gID + "/" + hash + ".png" }
 	EndpointGuildIconAnimated    = func(gID, hash string) string { return EndpointCDNIcons + gID + "/" + hash + ".gif" }
@@ -112,6 +113,8 @@ var (
 	EndpointChannelMessagesBulkDelete = func(cID string) string { return EndpointChannel(cID) + "/messages/bulk-delete" }
 	EndpointChannelMessagesPins       = func(cID string) string { return EndpointChannel(cID) + "/pins" }
 	EndpointChannelMessagePin         = func(cID, mID string) string { return EndpointChannel(cID) + "/pins/" + mID }
+	EndpointChannelMessageCrosspost   = func(cID, mID string) string { return EndpointChannel(cID) + "/messages/" + mID + "/crosspost" }
+	EndpointChannelFollow             = func(cID string) string { return EndpointChannel(cID) + "/followers" }
 
 	EndpointGroupIcon = func(cID, hash string) string { return EndpointCDNChannelIcons + cID + "/" + hash + ".png" }
 
@@ -139,8 +142,8 @@ var (
 
 	EndpointIntegrationsJoin = func(iID string) string { return EndpointAPI + "integrations/" + iID + "/join" }
 
-	EndpointEmoji         = func(eID string) string { return EndpointAPI + "emojis/" + eID + ".png" }
-	EndpointEmojiAnimated = func(eID string) string { return EndpointAPI + "emojis/" + eID + ".gif" }
+	EndpointEmoji         = func(eID string) string { return EndpointCDN + "emojis/" + eID + ".png" }
+	EndpointEmojiAnimated = func(eID string) string { return EndpointCDN + "emojis/" + eID + ".gif" }
 
 	EndpointOauth2            = EndpointAPI + "oauth2/"
 	EndpointApplications      = EndpointOauth2 + "applications"
