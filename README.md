@@ -10,6 +10,7 @@ This bot is created because my favorite anime fansubs group has disbanded and I 
 - [MongoDB](https://www.mongodb.com/)
 - [Go](https://golang.org/)
 - [Docker](https://docker.com) + [Docker compose](https://docs.docker.com/compose/) (optional)
+- [Elasticsearch](https://www.elastic.co/) (optional)
 
 ## Steps
 
@@ -18,6 +19,23 @@ This bot is created because my favorite anime fansubs group has disbanded and I 
     git clone github.com/rl404/nyaa-x-discord
     ```
 2. Modify `.env` according to your configuration.
+    ```properties
+    # Basic config (required).
+    NXD_INTERVAL=10
+    NXD_TIMEZONE=Asia/Jakarta
+    NXD_PREFIX=!
+    NXD_TOKEN=discordtoken123
+
+    # Mongodb config (required).
+    NXD_DB_URI=mongodb://localhost:27017/nyaaXdiscord
+    NXD_DB_USER=root
+    NXD_DB_PASSWORD=pass123
+
+    # Elasticsearch config (optional).
+    NXD_ES_ADDRESS=http://localhost:9200
+    NXD_ES_USER=
+    NXD_ES_PASSWORD=
+    ```
 3. Run.
     ```bash
     # for bot

@@ -44,6 +44,12 @@ check: build
 	@cd $(CMD_PATH); \
 	./$(BINARY_NAME) check
 
+# Build and run cron.
+.PHONY: cron
+cron: build
+	@cd $(CMD_PATH); \
+	./$(BINARY_NAME) cron
+
 # Docker base command.
 DOCKER_CMD   := docker
 DOCKER_IMAGE := $(DOCKER_CMD) image

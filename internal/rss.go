@@ -19,6 +19,7 @@ type rss struct {
 	discord  Discord
 	interval int
 	location *time.Location
+	logger   Logger
 }
 
 // Feed is each feed data model.
@@ -32,12 +33,13 @@ type Feed struct {
 }
 
 // NewRSS to create new RSS.
-func NewRSS(db Database, d Discord, interval int, l *time.Location) RSS {
+func NewRSS(db Database, d Discord, interval int, l *time.Location, logger Logger) RSS {
 	return &rss{
 		db:       db,
 		discord:  d,
 		interval: interval,
 		location: l,
+		logger:   logger,
 	}
 }
 
@@ -55,15 +57,20 @@ func (r *rss) Check() error {
 			return err
 		}
 
-		log.Println(user.UserID, len(feeds))
+		if r.logger != nil {
+			if err = r.logger.Send("nxd-count", LogData{
+				UserID:    user.UserID,
+				Count:     len(feeds),
+				CreatedAt: time.Now(),
+			}); err != nil {
+				log.Println(err)
+			}
+		}
 
 		if len(feeds) > 0 {
 			// Send message if there are new feeds.
 			return r.sendFeed(feeds, user)
 		}
-
-		// To prevent spamming.
-		time.Sleep(time.Second)
 	}
 
 	return nil
@@ -121,16 +128,13 @@ func (r *rss) getRawFeeds(user User) (feeds []*gofeed.Item, err error) {
 		}
 
 		feeds = append(feeds, f.Items...)
-
-		// To prevent spamming.
-		time.Sleep(time.Second)
 	}
 
 	return feeds, nil
 }
 
 func (r *rss) getLimitDate() time.Time {
-	return time.Now().UTC().Add(time.Duration(-1*r.interval) * time.Minute)
+	return time.Now().UTC().Add(time.Duration(-1*(r.interval+1)) * time.Minute)
 }
 
 func (r *rss) parseDate(d string) time.Time {
@@ -156,10 +160,9 @@ func (r *rss) sendFeed(feeds []Feed, user User) error {
 		for _, feed := range feeds[curr:end] {
 			fields = append(fields, &discordgo.MessageEmbedField{
 				Name: ellipsis(feed.Title, 100),
-				Value: fmt.Sprintf("[link](%s)  •  `%s`  •  %s",
+				Value: fmt.Sprintf("[link](%s)  •  `%s`",
 					feed.Link,
-					feed.Size,
-					feed.Date.Format("2006-01-02 15:04:05")),
+					feed.Size),
 			})
 		}
 

@@ -3,7 +3,7 @@ package internal
 var (
 	blueColor  = 4886754
 	footerName = "nyaa-x-discord"
-	nyaaURL    = "https://nyaa.si"
+	nyaaURL    = "https://nyaa.si/"
 
 	introTitle         = "Welcome"
 	introContent       = "\nIt looks like this is your first time using this bot.\n\nThis bot will help you keeping track of [Nyaa](" + nyaaURL + ") update according to your query/filter.\n\n**How to Start**\n1. Set filter.\n2. Set category.\n3. Set query.\n4. Turn on subscription.\n5. Wait a bit and I will notify you if there is a new update.\n\n**!help** to see all command list."

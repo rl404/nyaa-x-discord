@@ -19,14 +19,22 @@ type Config struct {
 	Prefix string `envconfig:"PREFIX" default:"!"`
 	// Discord token.
 	Token string `envconfig:"TOKEN"`
-	// MongoDB connection string.
+	// MongoDB config.
 	DB dbConfig `envconfig:"DB"`
+	// Elasticsearch config.
+	ES esConfig `envconfig:"ES"`
 }
 
 type dbConfig struct {
 	URI      string `envconfig:"URI"`
 	User     string `envconfig:"USER"`
 	Password string `envconfig:"PASSWORD"`
+}
+
+type esConfig struct {
+	Address  []string `envconfig:"ADDRESS"`
+	User     string   `envconfig:"USER"`
+	Password string   `envconfig:"PASSWORD"`
 }
 
 const envPath = "../../.env"
