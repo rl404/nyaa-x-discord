@@ -8,9 +8,12 @@ stringData:
     NXD_TIMEZONE: "UTC"
     NXD_PREFIX: "!"
     NXD_TOKEN: "discord-bot-token-here"
-    NXD_DB_URI: "mongodb://host:port/nyaaXdiscord"
+    NXD_DB_URI: "mongodb://localhost:27017/nyaaXdiscord"
     NXD_DB_USER: "root"
     NXD_DB_PASSWORD: "pass"
+    NXD_ES_ADDRESS: "http://localhost:9200"
+    NXD_ES_USER: ""
+    NXD_ES_PASSWORD: ""
 ---
 apiVersion: apps/v1
 kind: Deployment
