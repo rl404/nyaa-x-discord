@@ -5,7 +5,6 @@ metadata:
 type: Opaque
 stringData:
     NXD_INTERVAL: "10"
-    NXD_TIMEZONE: "UTC"
     NXD_PREFIX: "!"
     NXD_TOKEN: "discord-bot-token-here"
     NXD_DB_URI: "mongodb://localhost:27017/nyaaXdiscord"

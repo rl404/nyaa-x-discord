@@ -18,7 +18,6 @@ type rss struct {
 	db       Database
 	discord  Discord
 	interval int
-	location *time.Location
 	logger   Logger
 }
 
@@ -33,12 +32,11 @@ type Feed struct {
 }
 
 // NewRSS to create new RSS.
-func NewRSS(db Database, d Discord, interval int, l *time.Location, logger Logger) RSS {
+func NewRSS(db Database, d Discord, interval int, logger Logger) RSS {
 	return &rss{
 		db:       db,
 		discord:  d,
 		interval: interval,
-		location: l,
 		logger:   logger,
 	}
 }
@@ -95,7 +93,6 @@ func (r *rss) getFeeds(user User) (feeds []Feed, err error) {
 				CategoryID: item.Extensions["nyaa"]["categoryId"][0].Value,
 				Category:   item.Extensions["nyaa"]["category"][0].Value,
 				Size:       item.Extensions["nyaa"]["size"][0].Value,
-				Date:       itemTime.In(r.location),
 			})
 		}
 	}

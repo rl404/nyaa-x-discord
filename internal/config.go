@@ -1,8 +1,6 @@
 package internal
 
 import (
-	"time"
-
 	"github.com/joho/godotenv"
 	"github.com/kelseyhightower/envconfig"
 )
@@ -11,10 +9,6 @@ import (
 type Config struct {
 	// Scheduler check time (in minutes).
 	Interval int `envconfig:"INTERVAL" default:"10"`
-	// Local timezone.
-	Timezone string `envconfig:"TIMEZONE" default:"UTC"`
-	// Timezone location.
-	Location *time.Location
 	// Discord command prefix.
 	Prefix string `envconfig:"PREFIX" default:"!"`
 	// Discord token.
@@ -66,14 +60,6 @@ func GetConfig() (cfg Config, err error) {
 	if cfg.DB.URI == "" {
 		return cfg, ErrRequiredDB
 	}
-
-	// Set timezone location.
-	loc, err := time.LoadLocation(cfg.Timezone)
-	if err != nil {
-		return cfg, ErrInvalidTimezone
-	}
-
-	cfg.Location = loc
 
 	return cfg, nil
 }

@@ -36,7 +36,7 @@ func check() error {
 	}
 
 	// Init RSS.
-	r := internal.NewRSS(db, discord, cfg.Interval, cfg.Location, logger)
+	r := internal.NewRSS(db, discord, cfg.Interval, logger)
 
 	if err = r.Check(); err != nil {
 		if logger != nil {
