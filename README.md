@@ -22,7 +22,6 @@ This bot is created because my favorite anime fansubs group has disbanded and I 
     ```properties
     # Basic config (required).
     NXD_INTERVAL=10
-    NXD_TIMEZONE=Asia/Jakarta
     NXD_PREFIX=!
     NXD_TOKEN=discordtoken123
 
