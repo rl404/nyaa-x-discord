@@ -20,6 +20,7 @@ type User struct {
 // LogData is model for logging.
 type LogData struct {
 	UserID    string    `json:"user_id"`
+	Titles    []string  `json:"titles"`
 	Count     int       `json:"count"`
 	CreatedAt time.Time `json:"created_at"`
 }

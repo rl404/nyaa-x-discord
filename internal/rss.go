@@ -55,10 +55,15 @@ func (r *rss) Check() error {
 			return err
 		}
 
-		if r.logger != nil {
+		if len(feeds) > 0 && r.logger != nil {
+			var titles []string
+			for _, f := range feeds {
+				titles = append(titles, f.Title)
+			}
 			if err = r.logger.Send("nxd-count", LogData{
 				UserID:    user.UserID,
-				Count:     len(feeds),
+				Titles:    titles,
+				Count:     len(titles),
 				CreatedAt: time.Now(),
 			}); err != nil {
 				log.Println(err)
