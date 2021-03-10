@@ -44,9 +44,9 @@ spec:
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: nxd-cron-deployment
+  name: nxd-cron
   labels:
-    app: mal-cron
+    app: nxd
 spec:
   schedule: "*/10 * * * *"
   concurrencyPolicy: Forbid
