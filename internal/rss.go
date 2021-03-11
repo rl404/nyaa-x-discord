@@ -52,7 +52,8 @@ func (r *rss) Check() error {
 	for _, user := range users {
 		feeds, err := r.getFeeds(user)
 		if err != nil {
-			return err
+			HandleError(r.logger, err)
+			continue
 		}
 
 		if len(feeds) > 0 && r.logger != nil {
@@ -72,16 +73,8 @@ func (r *rss) Check() error {
 
 		if len(feeds) > 0 {
 			// Send message if there are new feeds.
-			if err = r.sendFeed(feeds, user); err != nil {
-				if r.logger != nil {
-					if errLog := r.logger.Send("nxd-error", LogError{
-						Error:     err.Error(),
-						CreatedAt: time.Now(),
-					}); errLog != nil {
-						log.Println(errLog)
-					}
-				}
-			}
+			err = r.sendFeed(feeds, user)
+			HandleError(r.logger, err)
 		}
 	}
 
@@ -145,7 +138,7 @@ func (r *rss) getRawFeeds(user User) (feeds []*gofeed.Item, err error) {
 }
 
 func (r *rss) getLimitDate() time.Time {
-	return time.Now().UTC().Add(time.Duration(-1*(r.interval+1)) * time.Minute)
+	return time.Now().UTC().Add(time.Duration(-1*r.interval) * time.Minute)
 }
 
 func (r *rss) parseDate(d string) time.Time {

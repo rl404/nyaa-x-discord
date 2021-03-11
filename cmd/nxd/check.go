@@ -1,9 +1,6 @@
 package main
 
 import (
-	"log"
-	"time"
-
 	"github.com/rl404/nyaa-x-discord/internal"
 )
 
@@ -38,16 +35,10 @@ func check() error {
 	// Init RSS.
 	r := internal.NewRSS(db, discord, cfg.Interval, logger)
 
-	if err = r.Check(); err != nil {
-		if logger != nil {
-			if errLog := logger.Send("nxd-error", internal.LogError{
-				Error:     err.Error(),
-				CreatedAt: time.Now(),
-			}); errLog != nil {
-				log.Println(errLog)
-			}
-		}
-	}
+	// Run check.
+	err = r.Check()
+
+	internal.HandleError(logger, err)
 
 	return err
 }
