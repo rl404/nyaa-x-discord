@@ -72,7 +72,16 @@ func (r *rss) Check() error {
 
 		if len(feeds) > 0 {
 			// Send message if there are new feeds.
-			return r.sendFeed(feeds, user)
+			if err = r.sendFeed(feeds, user); err != nil {
+				if r.logger != nil {
+					if errLog := r.logger.Send("nxd-error", LogError{
+						Error:     err.Error(),
+						CreatedAt: time.Now(),
+					}); errLog != nil {
+						log.Println(errLog)
+					}
+				}
+			}
 		}
 	}
 
