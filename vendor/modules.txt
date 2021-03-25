@@ -26,7 +26,7 @@ github.com/aws/aws-sdk-go/private/protocol/rest
 # github.com/bwmarrin/discordgo v0.23.2
 ## explicit
 github.com/bwmarrin/discordgo
-# github.com/elastic/go-elasticsearch/v7 v7.11.0
+# github.com/elastic/go-elasticsearch/v7 v7.12.0
 ## explicit
 github.com/elastic/go-elasticsearch/v7
 github.com/elastic/go-elasticsearch/v7/esapi
