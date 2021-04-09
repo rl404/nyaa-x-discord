@@ -12,7 +12,7 @@ require (
 	github.com/joho/godotenv v1.3.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/klauspost/compress v1.11.11 // indirect
-	github.com/mmcdole/gofeed v1.1.0
+	github.com/mmcdole/gofeed v1.1.1
 	github.com/mmcdole/goxpp v0.0.0-20200921145534-2f3784f67354 // indirect
 	github.com/spf13/cobra v1.1.3
 	go.mongodb.org/mongo-driver v1.5.1
