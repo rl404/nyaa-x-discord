@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/eapache/go-resiliency/retrier"
 	"github.com/mmcdole/gofeed"
 )
 
@@ -110,7 +111,7 @@ func (r *rss) getFeeds(user User) (feeds []Feed, err error) {
 func (r *rss) getRawFeeds(user User) (feeds []*gofeed.Item, err error) {
 	// If no query, just parse without query.
 	if len(user.Queries) == 0 {
-		f, err := gofeed.NewParser().ParseURL(getNyaaQuery(user, true))
+		f, err := r.parse(user)
 		if err != nil {
 			return nil, err
 		}
@@ -126,7 +127,7 @@ func (r *rss) getRawFeeds(user User) (feeds []*gofeed.Item, err error) {
 
 		tmp := user
 		tmp.Queries = user.Queries[curr:end]
-		f, err := gofeed.NewParser().ParseURL(getNyaaQuery(tmp, true))
+		f, err := r.parse(tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -135,6 +136,18 @@ func (r *rss) getRawFeeds(user User) (feeds []*gofeed.Item, err error) {
 	}
 
 	return feeds, nil
+}
+
+func (r *rss) parse(user User) (f *gofeed.Feed, err error) {
+	rt := retrier.New(retrier.ConstantBackoff(5, time.Second), nil)
+	err2 := rt.Run(func() error {
+		f, err = gofeed.NewParser().ParseURL(getNyaaQuery(user, true))
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	return f, err2
 }
 
 func (r *rss) getLimitDate() time.Time {
