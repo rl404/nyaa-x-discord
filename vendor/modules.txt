@@ -61,7 +61,7 @@ github.com/klauspost/compress/huff0
 github.com/klauspost/compress/snappy
 github.com/klauspost/compress/zstd
 github.com/klauspost/compress/zstd/internal/xxhash
-# github.com/mmcdole/gofeed v1.1.1
+# github.com/mmcdole/gofeed v1.1.3
 ## explicit
 github.com/mmcdole/gofeed
 github.com/mmcdole/gofeed/atom
