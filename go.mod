@@ -8,7 +8,7 @@ require (
 	github.com/aws/aws-sdk-go v1.38.18 // indirect
 	github.com/bwmarrin/discordgo v0.23.2
 	github.com/eapache/go-resiliency v1.2.0
-	github.com/elastic/go-elasticsearch/v7 v7.12.0
+	github.com/elastic/go-elasticsearch/v7 v7.13.0
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/joho/godotenv v1.3.0
 	github.com/kelseyhightower/envconfig v1.4.0
