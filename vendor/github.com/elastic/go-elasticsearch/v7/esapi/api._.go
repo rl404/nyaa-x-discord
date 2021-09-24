@@ -15,7 +15,7 @@
 // specific language governing permissions and limitations
 // under the License.
 //
-// Code generated from specification version 7.14.0 (eb28a49): DO NOT EDIT
+// Code generated from specification version 7.15.0 (2c06575): DO NOT EDIT
 
 package esapi
 
@@ -109,6 +109,7 @@ type API struct {
 	RenderSearchTemplate                          RenderSearchTemplate
 	ScriptsPainlessExecute                        ScriptsPainlessExecute
 	Scroll                                        Scroll
+	SearchMvt                                     SearchMvt
 	Search                                        Search
 	SearchShards                                  SearchShards
 	SearchTemplate                                SearchTemplate
@@ -208,11 +209,13 @@ type Indices struct {
 	DeleteIndexTemplate   IndicesDeleteIndexTemplate
 	Delete                IndicesDelete
 	DeleteTemplate        IndicesDeleteTemplate
+	DiskUsage             IndicesDiskUsage
 	ExistsAlias           IndicesExistsAlias
 	ExistsDocumentType    IndicesExistsDocumentType
 	ExistsIndexTemplate   IndicesExistsIndexTemplate
 	Exists                IndicesExists
 	ExistsTemplate        IndicesExistsTemplate
+	FieldUsageStats       IndicesFieldUsageStats
 	Flush                 IndicesFlush
 	FlushSynced           IndicesFlushSynced
 	Forcemerge            IndicesForcemerge
@@ -264,11 +267,15 @@ type Ingest struct {
 
 // Nodes contains the Nodes APIs
 type Nodes struct {
-	HotThreads           NodesHotThreads
-	Info                 NodesInfo
-	ReloadSecureSettings NodesReloadSecureSettings
-	Stats                NodesStats
-	Usage                NodesUsage
+	ClearMeteringArchive             NodesClearMeteringArchive
+	ClearRepositoriesMeteringArchive NodesClearRepositoriesMeteringArchive
+	GetMeteringInfo                  NodesGetMeteringInfo
+	GetRepositoriesMeteringInfo      NodesGetRepositoriesMeteringInfo
+	HotThreads                       NodesHotThreads
+	Info                             NodesInfo
+	ReloadSecureSettings             NodesReloadSecureSettings
+	Stats                            NodesStats
+	Usage                            NodesUsage
 }
 
 // Remote contains the Remote APIs
@@ -477,6 +484,7 @@ type Security struct {
 	PutRoleMapping              SecurityPutRoleMapping
 	PutRole                     SecurityPutRole
 	PutUser                     SecurityPutUser
+	QueryAPIKeys                SecurityQueryAPIKeys
 	SamlAuthenticate            SecuritySamlAuthenticate
 	SamlCompleteLogout          SecuritySamlCompleteLogout
 	SamlInvalidate              SecuritySamlInvalidate
@@ -590,6 +598,7 @@ func New(t Transport) *API {
 		RenderSearchTemplate:                          newRenderSearchTemplateFunc(t),
 		ScriptsPainlessExecute:                        newScriptsPainlessExecuteFunc(t),
 		Scroll:                                        newScrollFunc(t),
+		SearchMvt:                                     newSearchMvtFunc(t),
 		Search:                                        newSearchFunc(t),
 		SearchShards:                                  newSearchShardsFunc(t),
 		SearchTemplate:                                newSearchTemplateFunc(t),
@@ -682,11 +691,13 @@ func New(t Transport) *API {
 			DeleteIndexTemplate:   newIndicesDeleteIndexTemplateFunc(t),
 			Delete:                newIndicesDeleteFunc(t),
 			DeleteTemplate:        newIndicesDeleteTemplateFunc(t),
+			DiskUsage:             newIndicesDiskUsageFunc(t),
 			ExistsAlias:           newIndicesExistsAliasFunc(t),
 			ExistsDocumentType:    newIndicesExistsDocumentTypeFunc(t),
 			ExistsIndexTemplate:   newIndicesExistsIndexTemplateFunc(t),
 			Exists:                newIndicesExistsFunc(t),
 			ExistsTemplate:        newIndicesExistsTemplateFunc(t),
+			FieldUsageStats:       newIndicesFieldUsageStatsFunc(t),
 			Flush:                 newIndicesFlushFunc(t),
 			FlushSynced:           newIndicesFlushSyncedFunc(t),
 			Forcemerge:            newIndicesForcemergeFunc(t),
@@ -734,11 +745,15 @@ func New(t Transport) *API {
 			Simulate:       newIngestSimulateFunc(t),
 		},
 		Nodes: &Nodes{
-			HotThreads:           newNodesHotThreadsFunc(t),
-			Info:                 newNodesInfoFunc(t),
-			ReloadSecureSettings: newNodesReloadSecureSettingsFunc(t),
-			Stats:                newNodesStatsFunc(t),
-			Usage:                newNodesUsageFunc(t),
+			ClearMeteringArchive:             newNodesClearMeteringArchiveFunc(t),
+			ClearRepositoriesMeteringArchive: newNodesClearRepositoriesMeteringArchiveFunc(t),
+			GetMeteringInfo:                  newNodesGetMeteringInfoFunc(t),
+			GetRepositoriesMeteringInfo:      newNodesGetRepositoriesMeteringInfoFunc(t),
+			HotThreads:                       newNodesHotThreadsFunc(t),
+			Info:                             newNodesInfoFunc(t),
+			ReloadSecureSettings:             newNodesReloadSecureSettingsFunc(t),
+			Stats:                            newNodesStatsFunc(t),
+			Usage:                            newNodesUsageFunc(t),
 		},
 		Remote: &Remote{},
 		Snapshot: &Snapshot{
@@ -922,6 +937,7 @@ func New(t Transport) *API {
 			PutRoleMapping:              newSecurityPutRoleMappingFunc(t),
 			PutRole:                     newSecurityPutRoleFunc(t),
 			PutUser:                     newSecurityPutUserFunc(t),
+			QueryAPIKeys:                newSecurityQueryAPIKeysFunc(t),
 			SamlAuthenticate:            newSecuritySamlAuthenticateFunc(t),
 			SamlCompleteLogout:          newSecuritySamlCompleteLogoutFunc(t),
 			SamlInvalidate:              newSecuritySamlInvalidateFunc(t),
