@@ -10,7 +10,7 @@ require (
 	github.com/elastic/go-elasticsearch/v7 v7.15.0
 	github.com/golang/snappy v0.0.3 // indirect
 	github.com/gorilla/websocket v1.4.2 // indirect
-	github.com/joho/godotenv v1.3.0
+	github.com/joho/godotenv v1.4.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/klauspost/compress v1.11.13 // indirect
 	github.com/mmcdole/gofeed v1.1.3
