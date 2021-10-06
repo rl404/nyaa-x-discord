@@ -2,6 +2,7 @@ package internal
 
 import (
 	"context"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -23,12 +24,12 @@ type Database interface {
 type database struct {
 	client     *mongo.Client
 	collection *mongo.Collection
-	ctx        context.Context
 }
 
 // NewDB to create new database.
 func NewDB(uri, user, pass string) (Database, error) {
-	ctx := context.Background()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 
 	// Start connection.
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(uri).SetAuth(options.Credential{
@@ -39,26 +40,33 @@ func NewDB(uri, user, pass string) (Database, error) {
 		return nil, err
 	}
 
+	ctx2, cancel2 := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel2()
+
 	// Ping test.
-	if err = client.Ping(ctx, nil); err != nil {
+	if err = client.Ping(ctx2, nil); err != nil {
 		return nil, err
 	}
 
 	return &database{
 		client:     client,
 		collection: client.Database(dbName).Collection(collectionName),
-		ctx:        ctx,
 	}, nil
 }
 
 // Close to close db connection.
 func (d *database) Close() error {
-	return d.client.Disconnect(d.ctx)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	return d.client.Disconnect(ctx)
 }
 
 // GetUser to get user data.
 func (d *database) GetUser(userID string) (user User, isExist bool, err error) {
-	err = d.collection.FindOne(d.ctx, bson.M{"userId": userID}).Decode(&user)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	err = d.collection.FindOne(ctx, bson.M{"userId": userID}).Decode(&user)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return user, false, nil
@@ -70,7 +78,10 @@ func (d *database) GetUser(userID string) (user User, isExist bool, err error) {
 
 // CreateUser to create new user.
 func (d *database) CreateUser(userID string, channelID string) error {
-	_, err := d.collection.InsertOne(d.ctx, User{
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	_, err := d.collection.InsertOne(ctx, User{
 		UserID:    userID,
 		ChannelID: channelID,
 		Filter:    "0",
@@ -83,17 +94,27 @@ func (d *database) CreateUser(userID string, channelID string) error {
 
 // UpdateUser to update user data.
 func (d *database) UpdateUser(user User) error {
-	_, err := d.collection.UpdateOne(d.ctx, bson.M{"_id": user.ID}, bson.D{{Key: "$set", Value: user}})
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	_, err := d.collection.UpdateOne(ctx, bson.M{"_id": user.ID}, bson.D{{Key: "$set", Value: user}})
 	return err
 }
 
 // GetSubbedUser to get subscribed users.
 func (d *database) GetSubbedUser() (users []User, err error) {
-	cursor, err := d.collection.Find(d.ctx, bson.M{"subscribe": true})
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	cursor, err := d.collection.Find(ctx, bson.M{"subscribe": true})
 	if err != nil {
 		return nil, err
 	}
-	if err = cursor.All(d.ctx, &users); err != nil {
+
+	ctx2, cancel2 := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel2()
+
+	if err = cursor.All(ctx2, &users); err != nil {
 		return nil, err
 	}
 	return users, nil
