@@ -25,7 +25,7 @@ func check() error {
 			return err
 		}
 	}
-
+	return nil
 	// Init discord.
 	discord, err := internal.NewDiscord(cfg.Token)
 	if err != nil {
