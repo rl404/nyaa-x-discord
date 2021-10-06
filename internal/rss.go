@@ -72,6 +72,8 @@ func (r *rss) Check() error {
 			}
 		}
 
+		log.Println(user.UserID, len(feeds))
+
 		if len(feeds) > 0 {
 			// Send message if there are new feeds.
 			err = r.sendFeed(feeds, user)

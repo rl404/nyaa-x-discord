@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"strings"
+	"time"
 
 	"github.com/elastic/go-elasticsearch/v7"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
@@ -53,7 +54,11 @@ func (c *client) Send(key string, data interface{}) error {
 		Body:    strings.NewReader(string(d)),
 		Refresh: "true",
 	}
-	return isError(req.Do(context.Background(), c.es))
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	return isError(req.Do(ctx, c.es))
 }
 
 func isError(res *esapi.Response, err error) error {

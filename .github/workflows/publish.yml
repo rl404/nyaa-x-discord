@@ -6,7 +6,7 @@ on:
       - "*"
 jobs:
   publish_image:
-    name: Build and push mal-db image
+    name: Build and push nyaa-x-discord image
     runs-on: ubuntu-latest
     steps:
       - name: Check out code into the Go module directory
