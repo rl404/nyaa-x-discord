@@ -10,7 +10,7 @@ github.com/bwmarrin/discordgo
 # github.com/eapache/go-resiliency v1.2.0
 ## explicit
 github.com/eapache/go-resiliency/retrier
-# github.com/elastic/go-elasticsearch/v7 v7.13.1
+# github.com/elastic/go-elasticsearch/v7 v7.15.1
 ## explicit
 github.com/elastic/go-elasticsearch/v7
 github.com/elastic/go-elasticsearch/v7/esapi
