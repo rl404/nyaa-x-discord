@@ -4,7 +4,7 @@ github.com/PuerkitoBio/goquery
 # github.com/andybalholm/cascadia v1.2.0
 ## explicit
 github.com/andybalholm/cascadia
-# github.com/bwmarrin/discordgo v0.23.2
+# github.com/bwmarrin/discordgo v0.24.0
 ## explicit
 github.com/bwmarrin/discordgo
 # github.com/eapache/go-resiliency v1.2.0
@@ -21,7 +21,6 @@ github.com/go-stack/stack
 # github.com/golang/snappy v0.0.3
 github.com/golang/snappy
 # github.com/gorilla/websocket v1.4.2
-## explicit
 github.com/gorilla/websocket
 # github.com/inconshreveable/mousetrap v1.0.0
 github.com/inconshreveable/mousetrap
