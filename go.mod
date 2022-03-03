@@ -5,10 +5,9 @@ go 1.15
 require (
 	github.com/PuerkitoBio/goquery v1.6.1 // indirect
 	github.com/andybalholm/cascadia v1.2.0 // indirect
-	github.com/bwmarrin/discordgo v0.23.2
+	github.com/bwmarrin/discordgo v0.24.0
 	github.com/eapache/go-resiliency v1.2.0
 	github.com/elastic/go-elasticsearch/v7 v7.13.1
-	github.com/gorilla/websocket v1.4.2 // indirect
 	github.com/joho/godotenv v1.4.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/mmcdole/gofeed v1.1.3
