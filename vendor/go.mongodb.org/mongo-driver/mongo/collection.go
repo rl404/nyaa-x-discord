@@ -225,6 +225,7 @@ func (coll *Collection) BulkWrite(ctx context.Context, models []WriteModel,
 		collection:               coll,
 		selector:                 selector,
 		writeConcern:             wc,
+		let:                      bwo.Let,
 	}
 
 	err = op.execute(ctx)
@@ -454,6 +455,13 @@ func (coll *Collection) delete(ctx context.Context, filter interface{}, deleteOn
 	if do.Hint != nil {
 		op = op.Hint(true)
 	}
+	if do.Let != nil {
+		let, err := transformBsoncoreDocument(coll.registry, do.Let, true, "let")
+		if err != nil {
+			return nil, err
+		}
+		op = op.Let(let)
+	}
 
 	// deleteMany cannot be retried
 	retryMode := driver.RetryNone
@@ -548,6 +556,13 @@ func (coll *Collection) updateOrReplace(ctx context.Context, filter bsoncore.Doc
 		Database(coll.db.name).Collection(coll.name).
 		Deployment(coll.client.deployment).Crypt(coll.client.cryptFLE).Hint(uo.Hint != nil).
 		ArrayFilters(uo.ArrayFilters != nil).Ordered(true).ServerAPI(coll.client.serverAPI)
+	if uo.Let != nil {
+		let, err := transformBsoncoreDocument(coll.registry, uo.Let, true, "let")
+		if err != nil {
+			return nil, err
+		}
+		op = op.Let(let)
+	}
 
 	if uo.BypassDocumentValidation != nil && *uo.BypassDocumentValidation {
 		op = op.BypassDocumentValidation(*uo.BypassDocumentValidation)
@@ -701,6 +716,7 @@ func (coll *Collection) ReplaceOne(ctx context.Context, filter interface{},
 		uOpts.Collation = opt.Collation
 		uOpts.Upsert = opt.Upsert
 		uOpts.Hint = opt.Hint
+		uOpts.Let = opt.Let
 		updateOptions = append(updateOptions, uOpts)
 	}
 
@@ -739,8 +755,7 @@ func (coll *Collection) Aggregate(ctx context.Context, pipeline interface{},
 }
 
 // aggreate is the helper method for Aggregate
-func aggregate(a aggregateParams) (*Cursor, error) {
-
+func aggregate(a aggregateParams) (cur *Cursor, err error) {
 	if a.ctx == nil {
 		a.ctx = context.Background()
 	}
@@ -751,6 +766,12 @@ func aggregate(a aggregateParams) (*Cursor, error) {
 	}
 
 	sess := sessionFromContext(a.ctx)
+	// Always close any created implicit sessions if aggregate returns an error.
+	defer func() {
+		if err != nil && sess != nil {
+			closeImplicitSession(sess)
+		}
+	}()
 	if sess == nil && a.client.sessionPool != nil {
 		sess, err = session.NewClientSession(a.client.sessionPool, a.client.id, session.Implicit)
 		if err != nil {
@@ -824,7 +845,6 @@ func aggregate(a aggregateParams) (*Cursor, error) {
 	if ao.Hint != nil {
 		hintVal, err := transformValue(a.registry, ao.Hint, false, "hint")
 		if err != nil {
-			closeImplicitSession(sess)
 			return nil, err
 		}
 		op.Hint(hintVal)
@@ -832,10 +852,23 @@ func aggregate(a aggregateParams) (*Cursor, error) {
 	if ao.Let != nil {
 		let, err := transformBsoncoreDocument(a.registry, ao.Let, true, "let")
 		if err != nil {
-			closeImplicitSession(sess)
 			return nil, err
 		}
 		op.Let(let)
+	}
+	if ao.Custom != nil {
+		// Marshal all custom options before passing to the aggregate operation. Return
+		// any errors from Marshaling.
+		customOptions := make(map[string]bsoncore.Value)
+		for optionName, optionValue := range ao.Custom {
+			bsonType, bsonData, err := bson.MarshalValueWithRegistry(a.registry, optionValue)
+			if err != nil {
+				return nil, err
+			}
+			optionValueBSON := bsoncore.Value{Type: bsonType, Data: bsonData}
+			customOptions[optionName] = optionValueBSON
+		}
+		op.CustomOptions(customOptions)
 	}
 
 	retry := driver.RetryNone
@@ -846,7 +879,6 @@ func aggregate(a aggregateParams) (*Cursor, error) {
 
 	err = op.Execute(a.ctx)
 	if err != nil {
-		closeImplicitSession(sess)
 		if wce, ok := err.(driver.WriteCommandError); ok && wce.WriteConcernError != nil {
 			return nil, *convertDriverWriteConcernError(wce.WriteConcernError)
 		}
@@ -855,7 +887,6 @@ func aggregate(a aggregateParams) (*Cursor, error) {
 
 	bc, err := op.Result(cursorOpts)
 	if err != nil {
-		closeImplicitSession(sess)
 		return nil, replaceErrors(err)
 	}
 	cursor, err := newCursorWithSession(bc, a.registry, sess)
@@ -1103,7 +1134,7 @@ func (coll *Collection) Distinct(ctx context.Context, fieldName string, filter i
 //
 // For more information about the command, see https://docs.mongodb.com/manual/reference/command/find/.
 func (coll *Collection) Find(ctx context.Context, filter interface{},
-	opts ...*options.FindOptions) (*Cursor, error) {
+	opts ...*options.FindOptions) (cur *Cursor, err error) {
 
 	if ctx == nil {
 		ctx = context.Background()
@@ -1115,6 +1146,12 @@ func (coll *Collection) Find(ctx context.Context, filter interface{},
 	}
 
 	sess := sessionFromContext(ctx)
+	// Always close any created implicit sessions if Find returns an error.
+	defer func() {
+		if err != nil && sess != nil {
+			closeImplicitSession(sess)
+		}
+	}()
 	if sess == nil && coll.client.sessionPool != nil {
 		var err error
 		sess, err = session.NewClientSession(coll.client.sessionPool, coll.client.id, session.Implicit)
@@ -1125,7 +1162,6 @@ func (coll *Collection) Find(ctx context.Context, filter interface{},
 
 	err = coll.client.validSession(sess)
 	if err != nil {
-		closeImplicitSession(sess)
 		return nil, err
 	}
 
@@ -1172,10 +1208,16 @@ func (coll *Collection) Find(ctx context.Context, filter interface{},
 	if fo.Hint != nil {
 		hint, err := transformValue(coll.registry, fo.Hint, false, "hint")
 		if err != nil {
-			closeImplicitSession(sess)
 			return nil, err
 		}
 		op.Hint(hint)
+	}
+	if fo.Let != nil {
+		let, err := transformBsoncoreDocument(coll.registry, fo.Let, true, "let")
+		if err != nil {
+			return nil, err
+		}
+		op.Let(let)
 	}
 	if fo.Limit != nil {
 		limit := *fo.Limit
@@ -1189,7 +1231,6 @@ func (coll *Collection) Find(ctx context.Context, filter interface{},
 	if fo.Max != nil {
 		max, err := transformBsoncoreDocument(coll.registry, fo.Max, true, "max")
 		if err != nil {
-			closeImplicitSession(sess)
 			return nil, err
 		}
 		op.Max(max)
@@ -1203,7 +1244,6 @@ func (coll *Collection) Find(ctx context.Context, filter interface{},
 	if fo.Min != nil {
 		min, err := transformBsoncoreDocument(coll.registry, fo.Min, true, "min")
 		if err != nil {
-			closeImplicitSession(sess)
 			return nil, err
 		}
 		op.Min(min)
@@ -1217,7 +1257,6 @@ func (coll *Collection) Find(ctx context.Context, filter interface{},
 	if fo.Projection != nil {
 		proj, err := transformBsoncoreDocument(coll.registry, fo.Projection, true, "projection")
 		if err != nil {
-			closeImplicitSession(sess)
 			return nil, err
 		}
 		op.Projection(proj)
@@ -1237,7 +1276,6 @@ func (coll *Collection) Find(ctx context.Context, filter interface{},
 	if fo.Sort != nil {
 		sort, err := transformBsoncoreDocument(coll.registry, fo.Sort, false, "sort")
 		if err != nil {
-			closeImplicitSession(sess)
 			return nil, err
 		}
 		op.Sort(sort)
@@ -1249,13 +1287,11 @@ func (coll *Collection) Find(ctx context.Context, filter interface{},
 	op = op.Retry(retry)
 
 	if err = op.Execute(ctx); err != nil {
-		closeImplicitSession(sess)
 		return nil, replaceErrors(err)
 	}
 
 	bc, err := op.Result(cursorOpts)
 	if err != nil {
-		closeImplicitSession(sess)
 		return nil, replaceErrors(err)
 	}
 	return newCursorWithSession(bc, coll.registry, sess)
@@ -1412,6 +1448,13 @@ func (coll *Collection) FindOneAndDelete(ctx context.Context, filter interface{}
 		}
 		op = op.Hint(hint)
 	}
+	if fod.Let != nil {
+		let, err := transformBsoncoreDocument(coll.registry, fod.Let, true, "let")
+		if err != nil {
+			return &SingleResult{err: err}
+		}
+		op = op.Let(let)
+	}
 
 	return coll.findAndModify(ctx, op)
 }
@@ -1483,6 +1526,13 @@ func (coll *Collection) FindOneAndReplace(ctx context.Context, filter interface{
 			return &SingleResult{err: err}
 		}
 		op = op.Hint(hint)
+	}
+	if fo.Let != nil {
+		let, err := transformBsoncoreDocument(coll.registry, fo.Let, true, "let")
+		if err != nil {
+			return &SingleResult{err: err}
+		}
+		op = op.Let(let)
 	}
 
 	return coll.findAndModify(ctx, op)
@@ -1566,6 +1616,13 @@ func (coll *Collection) FindOneAndUpdate(ctx context.Context, filter interface{}
 			return &SingleResult{err: err}
 		}
 		op = op.Hint(hint)
+	}
+	if fo.Let != nil {
+		let, err := transformBsoncoreDocument(coll.registry, fo.Let, true, "let")
+		if err != nil {
+			return &SingleResult{err: err}
+		}
+		op = op.Let(let)
 	}
 
 	return coll.findAndModify(ctx, op)
