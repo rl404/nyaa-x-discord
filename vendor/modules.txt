@@ -4,7 +4,7 @@ github.com/PuerkitoBio/goquery
 # github.com/andybalholm/cascadia v1.2.0
 ## explicit
 github.com/andybalholm/cascadia
-# github.com/bwmarrin/discordgo v0.24.0
+# github.com/bwmarrin/discordgo v0.25.0
 ## explicit
 github.com/bwmarrin/discordgo
 # github.com/eapache/go-resiliency v1.2.0
