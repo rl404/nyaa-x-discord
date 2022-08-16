@@ -13,3 +13,6 @@
 
 # Binary
 cmd/nxd/nxd
+
+# Env
+.env

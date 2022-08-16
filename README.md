@@ -17,7 +17,7 @@ This bot is created because my favorite anime fansubs group has disbanded and I 
     ```bash
     git clone github.com/rl404/nyaa-x-discord
     ```
-2. Modify `.env` according to your configuration.
+2. Rename `.env.sample` to `.env` and modify according to your configuration.
     ```properties
     # Basic config (required).
     NXD_INTERVAL=10
@@ -36,8 +36,12 @@ This bot is created because my favorite anime fansubs group has disbanded and I 
     # for checker
     make cron
 
-    # or using docker (contain bot and checker)
-    make docker
+    # or using docker
+    # for bot
+    make docker-bot
+    # for checker
+    make docker-cron
+
     # to stop docker
     make docker-stop
     ```
