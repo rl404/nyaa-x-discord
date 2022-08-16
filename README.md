@@ -10,7 +10,6 @@ This bot is created because my favorite anime fansubs group has disbanded and I 
 - [MongoDB](https://www.mongodb.com/)
 - [Go](https://golang.org/)
 - [Docker](https://docker.com) + [Docker compose](https://docs.docker.com/compose/) (optional)
-- [Elasticsearch](https://www.elastic.co/) (optional)
 
 ## Steps
 
@@ -29,11 +28,6 @@ This bot is created because my favorite anime fansubs group has disbanded and I 
     NXD_DB_URI=mongodb://localhost:27017/nyaaXdiscord
     NXD_DB_USER=root
     NXD_DB_PASSWORD=pass123
-
-    # Elasticsearch config (optional).
-    NXD_ES_ADDRESS=http://localhost:9200
-    NXD_ES_USER=
-    NXD_ES_PASSWORD=
     ```
 3. Run.
     ```bash
@@ -117,4 +111,4 @@ Turn on or off bot subscription.
 
 MIT License
 
-Copyright (c) 2020 Axel
+Copyright (c) 2022 Axel

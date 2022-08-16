@@ -18,14 +18,6 @@ func check() error {
 	}
 	defer db.Close()
 
-	// Init elasticsearch.
-	var logger internal.Logger
-	if len(cfg.ES.Address) > 0 {
-		if logger, err = internal.NewES(cfg.ES.Address, cfg.ES.User, cfg.ES.Password); err != nil {
-			return err
-		}
-	}
-
 	// Init discord.
 	discord, err := internal.NewDiscord(cfg.Token)
 	if err != nil {
@@ -33,12 +25,10 @@ func check() error {
 	}
 
 	// Init RSS.
-	r := internal.NewRSS(db, discord, cfg.Interval, logger)
+	r := internal.NewRSS(db, discord, cfg.Interval)
 
 	// Run check.
 	err = r.Check()
-
-	internal.HandleError(logger, err)
 
 	return err
 }

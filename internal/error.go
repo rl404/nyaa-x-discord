@@ -2,8 +2,6 @@ package internal
 
 import (
 	"errors"
-	"log"
-	"time"
 )
 
 var (
@@ -18,16 +16,3 @@ var (
 	// ErrInvalidTimezone will throw if timezone is invalid.
 	ErrInvalidTimezone = errors.New("invalid timezone")
 )
-
-// HandleError to send error to log.
-func HandleError(l Logger, err error) {
-	if l == nil || err == nil {
-		return
-	}
-	if errLog := l.Send("nxd-error", LogError{
-		Error:     err.Error(),
-		CreatedAt: time.Now(),
-	}); errLog != nil {
-		log.Println(errLog)
-	}
-}

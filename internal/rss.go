@@ -19,7 +19,6 @@ type rss struct {
 	db       Database
 	discord  Discord
 	interval int
-	logger   Logger
 }
 
 // Feed is each feed data model.
@@ -33,12 +32,11 @@ type Feed struct {
 }
 
 // NewRSS to create new RSS.
-func NewRSS(db Database, d Discord, interval int, logger Logger) RSS {
+func NewRSS(db Database, d Discord, interval int) RSS {
 	return &rss{
 		db:       db,
 		discord:  d,
 		interval: interval,
-		logger:   logger,
 	}
 }
 
@@ -53,22 +51,13 @@ func (r *rss) Check() error {
 	for _, user := range users {
 		feeds, err := r.getFeeds(user)
 		if err != nil {
-			HandleError(r.logger, err)
 			continue
 		}
 
-		if len(feeds) > 0 && r.logger != nil {
+		if len(feeds) > 0 {
 			var titles []string
 			for _, f := range feeds {
 				titles = append(titles, f.Title)
-			}
-			if err = r.logger.Send("nxd-count", LogData{
-				UserID:    user.UserID,
-				Titles:    titles,
-				Count:     len(titles),
-				CreatedAt: time.Now(),
-			}); err != nil {
-				log.Println(err)
 			}
 		}
 
@@ -77,7 +66,6 @@ func (r *rss) Check() error {
 		if len(feeds) > 0 {
 			// Send message if there are new feeds.
 			err = r.sendFeed(feeds, user)
-			HandleError(r.logger, err)
 		}
 	}
 
