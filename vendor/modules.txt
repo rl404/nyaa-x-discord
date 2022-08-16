@@ -1,36 +1,37 @@
 # github.com/PuerkitoBio/goquery v1.8.0
-## explicit
+## explicit; go 1.13
 github.com/PuerkitoBio/goquery
 # github.com/andybalholm/cascadia v1.3.1
+## explicit; go 1.16
 github.com/andybalholm/cascadia
 # github.com/bwmarrin/discordgo v0.25.0
-## explicit
+## explicit; go 1.13
 github.com/bwmarrin/discordgo
 # github.com/eapache/go-resiliency v1.3.0
-## explicit
+## explicit; go 1.13
 github.com/eapache/go-resiliency/retrier
 # github.com/golang/snappy v0.0.4
 ## explicit
 github.com/golang/snappy
-# github.com/google/go-cmp v0.5.6
-## explicit
+# github.com/google/go-cmp v0.5.8
+## explicit; go 1.13
 # github.com/gorilla/websocket v1.5.0
-## explicit
+## explicit; go 1.12
 github.com/gorilla/websocket
 # github.com/inconshreveable/mousetrap v1.0.1
-## explicit
+## explicit; go 1.18
 github.com/inconshreveable/mousetrap
 # github.com/joho/godotenv v1.4.0
-## explicit
+## explicit; go 1.12
 github.com/joho/godotenv
 # github.com/json-iterator/go v1.1.12
-## explicit
+## explicit; go 1.12
 github.com/json-iterator/go
 # github.com/kelseyhightower/envconfig v1.4.0
 ## explicit
 github.com/kelseyhightower/envconfig
 # github.com/klauspost/compress v1.15.9
-## explicit
+## explicit; go 1.16
 github.com/klauspost/compress
 github.com/klauspost/compress/fse
 github.com/klauspost/compress/huff0
@@ -38,10 +39,8 @@ github.com/klauspost/compress/internal/cpuinfo
 github.com/klauspost/compress/internal/snapref
 github.com/klauspost/compress/zstd
 github.com/klauspost/compress/zstd/internal/xxhash
-# github.com/kr/pretty v0.2.0
-## explicit
 # github.com/mmcdole/gofeed v1.1.3
-## explicit
+## explicit; go 1.14
 github.com/mmcdole/gofeed
 github.com/mmcdole/gofeed/atom
 github.com/mmcdole/gofeed/extensions
@@ -55,30 +54,36 @@ github.com/mmcdole/goxpp
 ## explicit
 github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.2
+## explicit; go 1.12
 github.com/modern-go/reflect2
 # github.com/montanaflynn/stats v0.6.6
-## explicit
+## explicit; go 1.13
 github.com/montanaflynn/stats
 # github.com/pkg/errors v0.9.1
+## explicit
 github.com/pkg/errors
 # github.com/spf13/cobra v1.5.0
-## explicit
+## explicit; go 1.15
 github.com/spf13/cobra
 # github.com/spf13/pflag v1.0.5
+## explicit; go 1.12
 github.com/spf13/pflag
-# github.com/stretchr/testify v1.7.0
-## explicit
+# github.com/stretchr/testify v1.8.0
+## explicit; go 1.13
 # github.com/xdg-go/pbkdf2 v1.0.0
+## explicit; go 1.9
 github.com/xdg-go/pbkdf2
 # github.com/xdg-go/scram v1.1.1
+## explicit; go 1.11
 github.com/xdg-go/scram
 # github.com/xdg-go/stringprep v1.0.3
+## explicit; go 1.11
 github.com/xdg-go/stringprep
 # github.com/youmark/pkcs8 v0.0.0-20201027041543-1326539a0a0a
-## explicit
+## explicit; go 1.12
 github.com/youmark/pkcs8
 # go.mongodb.org/mongo-driver v1.10.1
-## explicit
+## explicit; go 1.10
 go.mongodb.org/mongo-driver/bson
 go.mongodb.org/mongo-driver/bson/bsoncodec
 go.mongodb.org/mongo-driver/bson/bsonoptions
@@ -115,7 +120,7 @@ go.mongodb.org/mongo-driver/x/mongo/driver/session
 go.mongodb.org/mongo-driver/x/mongo/driver/topology
 go.mongodb.org/mongo-driver/x/mongo/driver/wiremessage
 # golang.org/x/crypto v0.0.0-20220722155217-630584e8d5aa
-## explicit
+## explicit; go 1.17
 golang.org/x/crypto/internal/poly1305
 golang.org/x/crypto/internal/subtle
 golang.org/x/crypto/nacl/secretbox
@@ -124,7 +129,7 @@ golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/salsa20/salsa
 golang.org/x/crypto/scrypt
 # golang.org/x/net v0.0.0-20220812174116-3211cb980234
-## explicit
+## explicit; go 1.17
 golang.org/x/net/html
 golang.org/x/net/html/atom
 golang.org/x/net/html/charset
@@ -132,9 +137,10 @@ golang.org/x/net/html/charset
 ## explicit
 golang.org/x/sync/errgroup
 # golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab
-## explicit
+## explicit; go 1.17
 golang.org/x/sys/cpu
 # golang.org/x/text v0.3.7
+## explicit; go 1.17
 golang.org/x/text/encoding
 golang.org/x/text/encoding/charmap
 golang.org/x/text/encoding/htmlindex
@@ -153,7 +159,3 @@ golang.org/x/text/language
 golang.org/x/text/runes
 golang.org/x/text/transform
 golang.org/x/text/unicode/norm
-# golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1
-## explicit
-# gopkg.in/check.v1 v1.0.0-20190902080502-41f04d3bba15
-## explicit
