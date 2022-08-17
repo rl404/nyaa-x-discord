@@ -48,27 +48,21 @@ bot: build
 	@cd $(CMD_PATH); \
 	./$(BINARY_NAME) bot
 
-# Build and run checker.
-.PHONY: check
-check: build
+# Build and run cron check.
+.PHONY: cron-check
+cron-check: build
 	@cd $(CMD_PATH); \
-	./$(BINARY_NAME) check
-
-# Build and run cron.
-.PHONY: cron
-cron: build
-	@cd $(CMD_PATH); \
-	./$(BINARY_NAME) cron
+	./$(BINARY_NAME) cron check
 
 # Docker base command.
 DOCKER_CMD   := docker
 DOCKER_IMAGE := $(DOCKER_CMD) image
 
 # Docker-compose base command and docker-compose.yml path.
-COMPOSE_CMD   := docker-compose
-COMPOSE_BUILD := deployment/build.yml
-COMPOSE_BOT   := deployment/bot.yml
-COMPOSE_CRON  := deployment/cron.yml
+COMPOSE_CMD        := docker-compose
+COMPOSE_BUILD      := deployment/build.yml
+COMPOSE_BOT        := deployment/bot.yml
+COMPOSE_CRON_CHECK := deployment/cron-check.yml
 
 # Build docker images and container for the project
 # then delete builder image.
@@ -83,14 +77,14 @@ docker-bot:
 	@$(COMPOSE_CMD) -f $(COMPOSE_BOT) -p nxs-bot up -d
 	@$(COMPOSE_CMD) -f $(COMPOSE_BOT) -p nxs-bot logs --follow --tail 20
 
-# Start built docker containers for cron.
-.PHONY: docker-cron
-docker-cron:
-	@$(COMPOSE_CMD) -f $(COMPOSE_CRON) -p nxs-cron up -d
-	@$(COMPOSE_CMD) -f $(COMPOSE_CRON) -p nxs-cron logs --follow --tail 20
+# Start built docker containers for cron check.
+.PHONY: docker-cron-check
+docker-cron-check:
+	@$(COMPOSE_CMD) -f $(COMPOSE_CRON_CHECK) -p nxs-cron-check up -d
+	@$(COMPOSE_CMD) -f $(COMPOSE_CRON_CHECK) -p nxs-cron-check logs --follow --tail 20
 
 # Stop docker container.
 .PHONY: docker-stop
 docker-stop:
 	@$(COMPOSE_CMD) -f $(COMPOSE_BOT) -p nxs-bot stop
-	@$(COMPOSE_CMD) -f $(COMPOSE_CRON) -p nxs-cron stop
+	@$(COMPOSE_CMD) -f $(COMPOSE_CRON_CHECK) -p nxs-cron-check stop

@@ -1,9 +1,0 @@
-version: "2.4"
-
-services:
-  nxd-cron:
-    container_name: nxd-cron
-    image: rl404/nyaa-x-discord:latest
-    command: ./nxd cron
-    env_file: ./../.env
-    network_mode: host

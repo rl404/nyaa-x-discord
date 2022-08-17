@@ -1,8 +1,7 @@
 package main
 
 import (
-	"log"
-
+	"github.com/rl404/nyaa-x-discord/internal/utils"
 	"github.com/spf13/cobra"
 )
 
@@ -20,23 +19,22 @@ func main() {
 		},
 	})
 
-	cmd.AddCommand(&cobra.Command{
+	cronCmd := cobra.Command{
 		Use:   "cron",
-		Short: "Run check command but with scheduler",
+		Short: "Cron",
+	}
+
+	cronCmd.AddCommand(&cobra.Command{
+		Use:   "check",
+		Short: "Check update",
 		RunE: func(*cobra.Command, []string) error {
-			return cron()
+			return cronCheck()
 		},
 	})
 
-	cmd.AddCommand(&cobra.Command{
-		Use:   "check",
-		Short: "Run Nyaa checker and notify user",
-		RunE: func(*cobra.Command, []string) error {
-			return check()
-		},
-	})
+	cmd.AddCommand(&cronCmd)
 
 	if err := cmd.Execute(); err != nil {
-		log.Println(err)
+		utils.Fatal(err.Error())
 	}
 }

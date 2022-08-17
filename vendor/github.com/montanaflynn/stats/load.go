@@ -1,10 +1,7 @@
 package stats
 
 import (
-	"bufio"
-	"io"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -43,7 +40,7 @@ func LoadRawData(raw interface{}) (f Float64Data) {
 		return s
 	case []bool:
 		for _, v := range t {
-			if v {
+			if v == true {
 				s = append(s, 1.0)
 			} else {
 				s = append(s, 0.0)
@@ -141,7 +138,7 @@ func LoadRawData(raw interface{}) (f Float64Data) {
 		return s
 	case map[int]bool:
 		for i := 0; i < len(t); i++ {
-			if t[i] {
+			if t[i] == true {
 				s = append(s, 1.0)
 			} else {
 				s = append(s, 0.0)
@@ -156,18 +153,6 @@ func LoadRawData(raw interface{}) (f Float64Data) {
 	case map[int]time.Duration:
 		for i := 0; i < len(t); i++ {
 			r = append(r, t[i])
-		}
-	case string:
-		for _, v := range strings.Fields(t) {
-			r = append(r, v)
-		}
-	case io.Reader:
-		scanner := bufio.NewScanner(t)
-		for scanner.Scan() {
-			l := scanner.Text()
-			for _, v := range strings.Fields(l) {
-				r = append(r, v)
-			}
 		}
 	}
 
@@ -186,7 +171,7 @@ func LoadRawData(raw interface{}) (f Float64Data) {
 				f = append(f, fl)
 			}
 		case bool:
-			if t {
+			if t == true {
 				f = append(f, 1.0)
 			} else {
 				f = append(f, 0.0)
