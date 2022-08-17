@@ -41,7 +41,7 @@ type logConfig struct {
 }
 
 type newrelicConfig struct {
-	Name       string `envconfig:"NAME" default:"akatsuki"`
+	Name       string `envconfig:"NAME" default:"nxd"`
 	LicenseKey string `envconfig:"LICENSE_KEY"`
 }
 
