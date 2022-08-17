@@ -1,0 +1,10 @@
+version: "2.4"
+
+services:
+  nxd-bot:
+    container_name: nxd-bot
+    image: rl404/nyaa-x-discord:latest
+    command: ./nxd bot
+    restart: always
+    env_file: ./../.env
+    network_mode: host

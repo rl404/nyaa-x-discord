@@ -1,21 +1,4 @@
-// Licensed to Elasticsearch B.V. under one or more contributor
-// license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright
-// ownership. Elasticsearch B.V. licenses this file to you under
-// the Apache License, Version 2.0 (the "License"); you may
-// not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-//
-// Code generated from specification version 7.13.1: DO NOT EDIT
+// Code generated from specification version 7.3.0: DO NOT EDIT
 
 package esapi
 
@@ -37,16 +20,14 @@ func newSecurityGetRoleMappingFunc(t Transport) SecurityGetRoleMapping {
 
 // ----- API Definition -------------------------------------------------------
 
-// SecurityGetRoleMapping - Retrieves role mappings.
-//
-// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role-mapping.html.
+// SecurityGetRoleMapping - https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-role-mapping.html
 //
 type SecurityGetRoleMapping func(o ...func(*SecurityGetRoleMappingRequest)) (*Response, error)
 
 // SecurityGetRoleMappingRequest configures the Security Get Role Mapping API request.
 //
 type SecurityGetRoleMappingRequest struct {
-	Name []string
+	Name string
 
 	Pretty     bool
 	Human      bool
@@ -69,14 +50,14 @@ func (r SecurityGetRoleMappingRequest) Do(ctx context.Context, transport Transpo
 
 	method = "GET"
 
-	path.Grow(1 + len("_security") + 1 + len("role_mapping") + 1 + len(strings.Join(r.Name, ",")))
+	path.Grow(1 + len("_security") + 1 + len("role_mapping") + 1 + len(r.Name))
 	path.WriteString("/")
 	path.WriteString("_security")
 	path.WriteString("/")
 	path.WriteString("role_mapping")
-	if len(r.Name) > 0 {
+	if r.Name != "" {
 		path.WriteString("/")
-		path.WriteString(strings.Join(r.Name, ","))
+		path.WriteString(r.Name)
 	}
 
 	params = make(map[string]string)
@@ -97,10 +78,7 @@ func (r SecurityGetRoleMappingRequest) Do(ctx context.Context, transport Transpo
 		params["filter_path"] = strings.Join(r.FilterPath, ",")
 	}
 
-	req, err := newRequest(method, path.String(), nil)
-	if err != nil {
-		return nil, err
-	}
+	req, _ := newRequest(method, path.String(), nil)
 
 	if len(params) > 0 {
 		q := req.URL.Query()
@@ -148,9 +126,9 @@ func (f SecurityGetRoleMapping) WithContext(v context.Context) func(*SecurityGet
 	}
 }
 
-// WithName - a list of role-mapping names.
+// WithName - role-mapping name.
 //
-func (f SecurityGetRoleMapping) WithName(v ...string) func(*SecurityGetRoleMappingRequest) {
+func (f SecurityGetRoleMapping) WithName(v string) func(*SecurityGetRoleMappingRequest) {
 	return func(r *SecurityGetRoleMappingRequest) {
 		r.Name = v
 	}
@@ -198,16 +176,5 @@ func (f SecurityGetRoleMapping) WithHeader(h map[string]string) func(*SecurityGe
 		for k, v := range h {
 			r.Header.Add(k, v)
 		}
-	}
-}
-
-// WithOpaqueID adds the X-Opaque-Id header to the HTTP request.
-//
-func (f SecurityGetRoleMapping) WithOpaqueID(s string) func(*SecurityGetRoleMappingRequest) {
-	return func(r *SecurityGetRoleMappingRequest) {
-		if r.Header == nil {
-			r.Header = make(http.Header)
-		}
-		r.Header.Set("X-Opaque-Id", s)
 	}
 }

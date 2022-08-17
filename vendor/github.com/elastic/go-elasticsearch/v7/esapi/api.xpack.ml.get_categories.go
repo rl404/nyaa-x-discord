@@ -1,21 +1,4 @@
-// Licensed to Elasticsearch B.V. under one or more contributor
-// license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright
-// ownership. Elasticsearch B.V. licenses this file to you under
-// the Apache License, Version 2.0 (the "License"); you may
-// not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-//
-// Code generated from specification version 7.13.1: DO NOT EDIT
+// Code generated from specification version 7.3.0: DO NOT EDIT
 
 package esapi
 
@@ -39,9 +22,7 @@ func newMLGetCategoriesFunc(t Transport) MLGetCategories {
 
 // ----- API Definition -------------------------------------------------------
 
-// MLGetCategories - Retrieves anomaly detection job results for one or more categories.
-//
-// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-category.html.
+// MLGetCategories - http://www.elastic.co/guide/en/elasticsearch/reference/current/ml-get-category.html
 //
 type MLGetCategories func(job_id string, o ...func(*MLGetCategoriesRequest)) (*Response, error)
 
@@ -53,9 +34,8 @@ type MLGetCategoriesRequest struct {
 	CategoryID *int
 	JobID      string
 
-	From                *int
-	PartitionFieldValue string
-	Size                *int
+	From *int
+	Size *int
 
 	Pretty     bool
 	Human      bool
@@ -76,7 +56,7 @@ func (r MLGetCategoriesRequest) Do(ctx context.Context, transport Transport) (*R
 		params map[string]string
 	)
 
-	method = "POST"
+	method = "GET"
 
 	path.Grow(1 + len("_ml") + 1 + len("anomaly_detectors") + 1 + len(r.JobID) + 1 + len("results") + 1 + len("categories"))
 	path.WriteString("/")
@@ -102,10 +82,6 @@ func (r MLGetCategoriesRequest) Do(ctx context.Context, transport Transport) (*R
 		params["from"] = strconv.FormatInt(int64(*r.From), 10)
 	}
 
-	if r.PartitionFieldValue != "" {
-		params["partition_field_value"] = r.PartitionFieldValue
-	}
-
 	if r.Size != nil {
 		params["size"] = strconv.FormatInt(int64(*r.Size), 10)
 	}
@@ -126,10 +102,7 @@ func (r MLGetCategoriesRequest) Do(ctx context.Context, transport Transport) (*R
 		params["filter_path"] = strings.Join(r.FilterPath, ",")
 	}
 
-	req, err := newRequest(method, path.String(), r.Body)
-	if err != nil {
-		return nil, err
-	}
+	req, _ := newRequest(method, path.String(), r.Body)
 
 	if len(params) > 0 {
 		q := req.URL.Query()
@@ -205,14 +178,6 @@ func (f MLGetCategories) WithFrom(v int) func(*MLGetCategoriesRequest) {
 	}
 }
 
-// WithPartitionFieldValue - specifies the partition to retrieve categories for. this is optional, and should never be used for jobs where per-partition categorization is disabled..
-//
-func (f MLGetCategories) WithPartitionFieldValue(v string) func(*MLGetCategoriesRequest) {
-	return func(r *MLGetCategoriesRequest) {
-		r.PartitionFieldValue = v
-	}
-}
-
 // WithSize - specifies a max number of categories to get.
 //
 func (f MLGetCategories) WithSize(v int) func(*MLGetCategoriesRequest) {
@@ -263,16 +228,5 @@ func (f MLGetCategories) WithHeader(h map[string]string) func(*MLGetCategoriesRe
 		for k, v := range h {
 			r.Header.Add(k, v)
 		}
-	}
-}
-
-// WithOpaqueID adds the X-Opaque-Id header to the HTTP request.
-//
-func (f MLGetCategories) WithOpaqueID(s string) func(*MLGetCategoriesRequest) {
-	return func(r *MLGetCategoriesRequest) {
-		if r.Header == nil {
-			r.Header = make(http.Header)
-		}
-		r.Header.Set("X-Opaque-Id", s)
 	}
 }

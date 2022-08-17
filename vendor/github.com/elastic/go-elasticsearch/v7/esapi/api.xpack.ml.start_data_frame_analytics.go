@@ -1,21 +1,4 @@
-// Licensed to Elasticsearch B.V. under one or more contributor
-// license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright
-// ownership. Elasticsearch B.V. licenses this file to you under
-// the Apache License, Version 2.0 (the "License"); you may
-// not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-//
-// Code generated from specification version 7.13.1: DO NOT EDIT
+// Code generated from specification version 7.3.0: DO NOT EDIT
 
 package esapi
 
@@ -39,9 +22,7 @@ func newMLStartDataFrameAnalyticsFunc(t Transport) MLStartDataFrameAnalytics {
 
 // ----- API Definition -------------------------------------------------------
 
-// MLStartDataFrameAnalytics - Starts a data frame analytics job.
-//
-// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/current/start-dfanalytics.html.
+// MLStartDataFrameAnalytics - http://www.elastic.co/guide/en/elasticsearch/reference/current/start-dfanalytics.html
 //
 type MLStartDataFrameAnalytics func(id string, o ...func(*MLStartDataFrameAnalyticsRequest)) (*Response, error)
 
@@ -109,10 +90,7 @@ func (r MLStartDataFrameAnalyticsRequest) Do(ctx context.Context, transport Tran
 		params["filter_path"] = strings.Join(r.FilterPath, ",")
 	}
 
-	req, err := newRequest(method, path.String(), r.Body)
-	if err != nil {
-		return nil, err
-	}
+	req, _ := newRequest(method, path.String(), r.Body)
 
 	if len(params) > 0 {
 		q := req.URL.Query()
@@ -222,16 +200,5 @@ func (f MLStartDataFrameAnalytics) WithHeader(h map[string]string) func(*MLStart
 		for k, v := range h {
 			r.Header.Add(k, v)
 		}
-	}
-}
-
-// WithOpaqueID adds the X-Opaque-Id header to the HTTP request.
-//
-func (f MLStartDataFrameAnalytics) WithOpaqueID(s string) func(*MLStartDataFrameAnalyticsRequest) {
-	return func(r *MLStartDataFrameAnalyticsRequest) {
-		if r.Header == nil {
-			r.Header = make(http.Header)
-		}
-		r.Header.Set("X-Opaque-Id", s)
 	}
 }

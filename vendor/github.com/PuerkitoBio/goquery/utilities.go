@@ -36,22 +36,12 @@ func NodeName(s *Selection) string {
 	if s.Length() == 0 {
 		return ""
 	}
-	return nodeName(s.Get(0))
-}
-
-// nodeName returns the node name of the given html node.
-// See NodeName for additional details on behaviour.
-func nodeName(node *html.Node) string {
-	if node == nil {
-		return ""
-	}
-
-	switch node.Type {
+	switch n := s.Get(0); n.Type {
 	case html.ElementNode, html.DoctypeNode:
-		return node.Data
+		return n.Data
 	default:
-		if node.Type >= 0 && int(node.Type) < len(nodeNames) {
-			return nodeNames[node.Type]
+		if n.Type >= 0 && int(n.Type) < len(nodeNames) {
+			return nodeNames[n.Type]
 		}
 		return ""
 	}

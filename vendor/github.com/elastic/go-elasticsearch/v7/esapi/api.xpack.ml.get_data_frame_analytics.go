@@ -1,21 +1,4 @@
-// Licensed to Elasticsearch B.V. under one or more contributor
-// license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright
-// ownership. Elasticsearch B.V. licenses this file to you under
-// the Apache License, Version 2.0 (the "License"); you may
-// not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-//
-// Code generated from specification version 7.13.1: DO NOT EDIT
+// Code generated from specification version 7.3.0: DO NOT EDIT
 
 package esapi
 
@@ -38,9 +21,7 @@ func newMLGetDataFrameAnalyticsFunc(t Transport) MLGetDataFrameAnalytics {
 
 // ----- API Definition -------------------------------------------------------
 
-// MLGetDataFrameAnalytics - Retrieves configuration information for data frame analytics jobs.
-//
-// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics.html.
+// MLGetDataFrameAnalytics - http://www.elastic.co/guide/en/elasticsearch/reference/current/get-dfanalytics.html
 //
 type MLGetDataFrameAnalytics func(o ...func(*MLGetDataFrameAnalyticsRequest)) (*Response, error)
 
@@ -49,10 +30,9 @@ type MLGetDataFrameAnalytics func(o ...func(*MLGetDataFrameAnalyticsRequest)) (*
 type MLGetDataFrameAnalyticsRequest struct {
 	ID string
 
-	AllowNoMatch     *bool
-	ExcludeGenerated *bool
-	From             *int
-	Size             *int
+	AllowNoMatch *bool
+	From         *int
+	Size         *int
 
 	Pretty     bool
 	Human      bool
@@ -93,10 +73,6 @@ func (r MLGetDataFrameAnalyticsRequest) Do(ctx context.Context, transport Transp
 		params["allow_no_match"] = strconv.FormatBool(*r.AllowNoMatch)
 	}
 
-	if r.ExcludeGenerated != nil {
-		params["exclude_generated"] = strconv.FormatBool(*r.ExcludeGenerated)
-	}
-
 	if r.From != nil {
 		params["from"] = strconv.FormatInt(int64(*r.From), 10)
 	}
@@ -121,10 +97,7 @@ func (r MLGetDataFrameAnalyticsRequest) Do(ctx context.Context, transport Transp
 		params["filter_path"] = strings.Join(r.FilterPath, ",")
 	}
 
-	req, err := newRequest(method, path.String(), nil)
-	if err != nil {
-		return nil, err
-	}
+	req, _ := newRequest(method, path.String(), nil)
 
 	if len(params) > 0 {
 		q := req.URL.Query()
@@ -188,14 +161,6 @@ func (f MLGetDataFrameAnalytics) WithAllowNoMatch(v bool) func(*MLGetDataFrameAn
 	}
 }
 
-// WithExcludeGenerated - omits fields that are illegal to set on data frame analytics put.
-//
-func (f MLGetDataFrameAnalytics) WithExcludeGenerated(v bool) func(*MLGetDataFrameAnalyticsRequest) {
-	return func(r *MLGetDataFrameAnalyticsRequest) {
-		r.ExcludeGenerated = &v
-	}
-}
-
 // WithFrom - skips a number of analytics.
 //
 func (f MLGetDataFrameAnalytics) WithFrom(v int) func(*MLGetDataFrameAnalyticsRequest) {
@@ -254,16 +219,5 @@ func (f MLGetDataFrameAnalytics) WithHeader(h map[string]string) func(*MLGetData
 		for k, v := range h {
 			r.Header.Add(k, v)
 		}
-	}
-}
-
-// WithOpaqueID adds the X-Opaque-Id header to the HTTP request.
-//
-func (f MLGetDataFrameAnalytics) WithOpaqueID(s string) func(*MLGetDataFrameAnalyticsRequest) {
-	return func(r *MLGetDataFrameAnalyticsRequest) {
-		if r.Header == nil {
-			r.Header = make(http.Header)
-		}
-		r.Header.Set("X-Opaque-Id", s)
 	}
 }

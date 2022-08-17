@@ -1,21 +1,4 @@
-// Licensed to Elasticsearch B.V. under one or more contributor
-// license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright
-// ownership. Elasticsearch B.V. licenses this file to you under
-// the Apache License, Version 2.0 (the "License"); you may
-// not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-//
-// Code generated from specification version 7.13.1: DO NOT EDIT
+// Code generated from specification version 7.3.0: DO NOT EDIT
 
 package esapi
 
@@ -26,8 +9,8 @@ import (
 )
 
 func newILMRemovePolicyFunc(t Transport) ILMRemovePolicy {
-	return func(index string, o ...func(*ILMRemovePolicyRequest)) (*Response, error) {
-		var r = ILMRemovePolicyRequest{Index: index}
+	return func(o ...func(*ILMRemovePolicyRequest)) (*Response, error) {
+		var r = ILMRemovePolicyRequest{}
 		for _, f := range o {
 			f(&r)
 		}
@@ -37,11 +20,9 @@ func newILMRemovePolicyFunc(t Transport) ILMRemovePolicy {
 
 // ----- API Definition -------------------------------------------------------
 
-// ILMRemovePolicy - Removes the assigned lifecycle policy and stops managing the specified index
+// ILMRemovePolicy - https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-remove-policy.html
 //
-// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/current/ilm-remove-policy.html.
-//
-type ILMRemovePolicy func(index string, o ...func(*ILMRemovePolicyRequest)) (*Response, error)
+type ILMRemovePolicy func(o ...func(*ILMRemovePolicyRequest)) (*Response, error)
 
 // ILMRemovePolicyRequest configures the ILM Remove Policy API request.
 //
@@ -70,8 +51,10 @@ func (r ILMRemovePolicyRequest) Do(ctx context.Context, transport Transport) (*R
 	method = "POST"
 
 	path.Grow(1 + len(r.Index) + 1 + len("_ilm") + 1 + len("remove"))
-	path.WriteString("/")
-	path.WriteString(r.Index)
+	if r.Index != "" {
+		path.WriteString("/")
+		path.WriteString(r.Index)
+	}
 	path.WriteString("/")
 	path.WriteString("_ilm")
 	path.WriteString("/")
@@ -95,10 +78,7 @@ func (r ILMRemovePolicyRequest) Do(ctx context.Context, transport Transport) (*R
 		params["filter_path"] = strings.Join(r.FilterPath, ",")
 	}
 
-	req, err := newRequest(method, path.String(), nil)
-	if err != nil {
-		return nil, err
-	}
+	req, _ := newRequest(method, path.String(), nil)
 
 	if len(params) > 0 {
 		q := req.URL.Query()
@@ -146,6 +126,14 @@ func (f ILMRemovePolicy) WithContext(v context.Context) func(*ILMRemovePolicyReq
 	}
 }
 
+// WithIndex - the name of the index to remove policy on.
+//
+func (f ILMRemovePolicy) WithIndex(v string) func(*ILMRemovePolicyRequest) {
+	return func(r *ILMRemovePolicyRequest) {
+		r.Index = v
+	}
+}
+
 // WithPretty makes the response body pretty-printed.
 //
 func (f ILMRemovePolicy) WithPretty() func(*ILMRemovePolicyRequest) {
@@ -188,16 +176,5 @@ func (f ILMRemovePolicy) WithHeader(h map[string]string) func(*ILMRemovePolicyRe
 		for k, v := range h {
 			r.Header.Add(k, v)
 		}
-	}
-}
-
-// WithOpaqueID adds the X-Opaque-Id header to the HTTP request.
-//
-func (f ILMRemovePolicy) WithOpaqueID(s string) func(*ILMRemovePolicyRequest) {
-	return func(r *ILMRemovePolicyRequest) {
-		if r.Header == nil {
-			r.Header = make(http.Header)
-		}
-		r.Header.Set("X-Opaque-Id", s)
 	}
 }

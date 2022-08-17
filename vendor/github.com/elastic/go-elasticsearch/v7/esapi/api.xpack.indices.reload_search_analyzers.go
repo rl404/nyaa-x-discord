@@ -1,21 +1,4 @@
-// Licensed to Elasticsearch B.V. under one or more contributor
-// license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright
-// ownership. Elasticsearch B.V. licenses this file to you under
-// the Apache License, Version 2.0 (the "License"); you may
-// not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-//
-// Code generated from specification version 7.13.1: DO NOT EDIT
+// Code generated from specification version 7.3.0: DO NOT EDIT
 
 package esapi
 
@@ -27,8 +10,8 @@ import (
 )
 
 func newIndicesReloadSearchAnalyzersFunc(t Transport) IndicesReloadSearchAnalyzers {
-	return func(index []string, o ...func(*IndicesReloadSearchAnalyzersRequest)) (*Response, error) {
-		var r = IndicesReloadSearchAnalyzersRequest{Index: index}
+	return func(o ...func(*IndicesReloadSearchAnalyzersRequest)) (*Response, error) {
+		var r = IndicesReloadSearchAnalyzersRequest{}
 		for _, f := range o {
 			f(&r)
 		}
@@ -38,11 +21,9 @@ func newIndicesReloadSearchAnalyzersFunc(t Transport) IndicesReloadSearchAnalyze
 
 // ----- API Definition -------------------------------------------------------
 
-// IndicesReloadSearchAnalyzers - Reloads an index's search analyzers and their resources.
+// IndicesReloadSearchAnalyzers - https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-reload-analyzers.html
 //
-// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/master/indices-reload-analyzers.html.
-//
-type IndicesReloadSearchAnalyzers func(index []string, o ...func(*IndicesReloadSearchAnalyzersRequest)) (*Response, error)
+type IndicesReloadSearchAnalyzers func(o ...func(*IndicesReloadSearchAnalyzersRequest)) (*Response, error)
 
 // IndicesReloadSearchAnalyzersRequest configures the Indices Reload Search Analyzers API request.
 //
@@ -72,11 +53,13 @@ func (r IndicesReloadSearchAnalyzersRequest) Do(ctx context.Context, transport T
 		params map[string]string
 	)
 
-	method = "POST"
+	method = "GET"
 
 	path.Grow(1 + len(strings.Join(r.Index, ",")) + 1 + len("_reload_search_analyzers"))
-	path.WriteString("/")
-	path.WriteString(strings.Join(r.Index, ","))
+	if len(r.Index) > 0 {
+		path.WriteString("/")
+		path.WriteString(strings.Join(r.Index, ","))
+	}
 	path.WriteString("/")
 	path.WriteString("_reload_search_analyzers")
 
@@ -110,10 +93,7 @@ func (r IndicesReloadSearchAnalyzersRequest) Do(ctx context.Context, transport T
 		params["filter_path"] = strings.Join(r.FilterPath, ",")
 	}
 
-	req, err := newRequest(method, path.String(), nil)
-	if err != nil {
-		return nil, err
-	}
+	req, _ := newRequest(method, path.String(), nil)
 
 	if len(params) > 0 {
 		q := req.URL.Query()
@@ -158,6 +138,14 @@ func (r IndicesReloadSearchAnalyzersRequest) Do(ctx context.Context, transport T
 func (f IndicesReloadSearchAnalyzers) WithContext(v context.Context) func(*IndicesReloadSearchAnalyzersRequest) {
 	return func(r *IndicesReloadSearchAnalyzersRequest) {
 		r.ctx = v
+	}
+}
+
+// WithIndex - a list of index names to reload analyzers for.
+//
+func (f IndicesReloadSearchAnalyzers) WithIndex(v ...string) func(*IndicesReloadSearchAnalyzersRequest) {
+	return func(r *IndicesReloadSearchAnalyzersRequest) {
+		r.Index = v
 	}
 }
 
@@ -227,16 +215,5 @@ func (f IndicesReloadSearchAnalyzers) WithHeader(h map[string]string) func(*Indi
 		for k, v := range h {
 			r.Header.Add(k, v)
 		}
-	}
-}
-
-// WithOpaqueID adds the X-Opaque-Id header to the HTTP request.
-//
-func (f IndicesReloadSearchAnalyzers) WithOpaqueID(s string) func(*IndicesReloadSearchAnalyzersRequest) {
-	return func(r *IndicesReloadSearchAnalyzersRequest) {
-		if r.Header == nil {
-			r.Header = make(http.Header)
-		}
-		r.Header.Set("X-Opaque-Id", s)
 	}
 }

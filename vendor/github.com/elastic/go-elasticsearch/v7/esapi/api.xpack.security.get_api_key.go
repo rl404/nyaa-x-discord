@@ -1,28 +1,10 @@
-// Licensed to Elasticsearch B.V. under one or more contributor
-// license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright
-// ownership. Elasticsearch B.V. licenses this file to you under
-// the Apache License, Version 2.0 (the "License"); you may
-// not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-//
-// Code generated from specification version 7.13.1: DO NOT EDIT
+// Code generated from specification version 7.3.0: DO NOT EDIT
 
 package esapi
 
 import (
 	"context"
 	"net/http"
-	"strconv"
 	"strings"
 )
 
@@ -38,9 +20,7 @@ func newSecurityGetAPIKeyFunc(t Transport) SecurityGetAPIKey {
 
 // ----- API Definition -------------------------------------------------------
 
-// SecurityGetAPIKey - Retrieves information for one or more API keys.
-//
-// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-api-key.html.
+// SecurityGetAPIKey - https://www.elastic.co/guide/en/elasticsearch/reference/current/security-api-get-api-key.html
 //
 type SecurityGetAPIKey func(o ...func(*SecurityGetAPIKeyRequest)) (*Response, error)
 
@@ -49,7 +29,6 @@ type SecurityGetAPIKey func(o ...func(*SecurityGetAPIKeyRequest)) (*Response, er
 type SecurityGetAPIKeyRequest struct {
 	ID        string
 	Name      string
-	Owner     *bool
 	RealmName string
 	Username  string
 
@@ -87,10 +66,6 @@ func (r SecurityGetAPIKeyRequest) Do(ctx context.Context, transport Transport) (
 		params["name"] = r.Name
 	}
 
-	if r.Owner != nil {
-		params["owner"] = strconv.FormatBool(*r.Owner)
-	}
-
 	if r.RealmName != "" {
 		params["realm_name"] = r.RealmName
 	}
@@ -115,10 +90,7 @@ func (r SecurityGetAPIKeyRequest) Do(ctx context.Context, transport Transport) (
 		params["filter_path"] = strings.Join(r.FilterPath, ",")
 	}
 
-	req, err := newRequest(method, path.String(), nil)
-	if err != nil {
-		return nil, err
-	}
+	req, _ := newRequest(method, path.String(), nil)
 
 	if len(params) > 0 {
 		q := req.URL.Query()
@@ -182,14 +154,6 @@ func (f SecurityGetAPIKey) WithName(v string) func(*SecurityGetAPIKeyRequest) {
 	}
 }
 
-// WithOwner - flag to query api keys owned by the currently authenticated user.
-//
-func (f SecurityGetAPIKey) WithOwner(v bool) func(*SecurityGetAPIKeyRequest) {
-	return func(r *SecurityGetAPIKeyRequest) {
-		r.Owner = &v
-	}
-}
-
 // WithRealmName - realm name of the user who created this api key to be retrieved.
 //
 func (f SecurityGetAPIKey) WithRealmName(v string) func(*SecurityGetAPIKeyRequest) {
@@ -248,16 +212,5 @@ func (f SecurityGetAPIKey) WithHeader(h map[string]string) func(*SecurityGetAPIK
 		for k, v := range h {
 			r.Header.Add(k, v)
 		}
-	}
-}
-
-// WithOpaqueID adds the X-Opaque-Id header to the HTTP request.
-//
-func (f SecurityGetAPIKey) WithOpaqueID(s string) func(*SecurityGetAPIKeyRequest) {
-	return func(r *SecurityGetAPIKeyRequest) {
-		if r.Header == nil {
-			r.Header = make(http.Header)
-		}
-		r.Header.Set("X-Opaque-Id", s)
 	}
 }

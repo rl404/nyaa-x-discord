@@ -1,21 +1,4 @@
-// Licensed to Elasticsearch B.V. under one or more contributor
-// license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright
-// ownership. Elasticsearch B.V. licenses this file to you under
-// the Apache License, Version 2.0 (the "License"); you may
-// not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-//
-// Code generated from specification version 7.13.1: DO NOT EDIT
+// Code generated from specification version 7.3.0: DO NOT EDIT
 
 package esapi
 
@@ -40,23 +23,22 @@ func newCatTasksFunc(t Transport) CatTasks {
 
 // CatTasks returns information about the tasks currently executing on one or more nodes in the cluster.
 //
-// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html.
+// See full documentation at http://www.elastic.co/guide/en/elasticsearch/reference/master/tasks.html.
 //
 type CatTasks func(o ...func(*CatTasksRequest)) (*Response, error)
 
 // CatTasksRequest configures the Cat Tasks API request.
 //
 type CatTasksRequest struct {
-	Actions      []string
-	Detailed     *bool
-	Format       string
-	H            []string
-	Help         *bool
-	Nodes        []string
-	ParentTaskID string
-	S            []string
-	Time         string
-	V            *bool
+	Actions    []string
+	Detailed   *bool
+	Format     string
+	H          []string
+	Help       *bool
+	NodeID     []string
+	ParentTask *int
+	S          []string
+	V          *bool
 
 	Pretty     bool
 	Human      bool
@@ -104,20 +86,16 @@ func (r CatTasksRequest) Do(ctx context.Context, transport Transport) (*Response
 		params["help"] = strconv.FormatBool(*r.Help)
 	}
 
-	if len(r.Nodes) > 0 {
-		params["nodes"] = strings.Join(r.Nodes, ",")
+	if len(r.NodeID) > 0 {
+		params["node_id"] = strings.Join(r.NodeID, ",")
 	}
 
-	if r.ParentTaskID != "" {
-		params["parent_task_id"] = r.ParentTaskID
+	if r.ParentTask != nil {
+		params["parent_task"] = strconv.FormatInt(int64(*r.ParentTask), 10)
 	}
 
 	if len(r.S) > 0 {
 		params["s"] = strings.Join(r.S, ",")
-	}
-
-	if r.Time != "" {
-		params["time"] = r.Time
 	}
 
 	if r.V != nil {
@@ -140,10 +118,7 @@ func (r CatTasksRequest) Do(ctx context.Context, transport Transport) (*Response
 		params["filter_path"] = strings.Join(r.FilterPath, ",")
 	}
 
-	req, err := newRequest(method, path.String(), nil)
-	if err != nil {
-		return nil, err
-	}
+	req, _ := newRequest(method, path.String(), nil)
 
 	if len(params) > 0 {
 		q := req.URL.Query()
@@ -231,19 +206,19 @@ func (f CatTasks) WithHelp(v bool) func(*CatTasksRequest) {
 	}
 }
 
-// WithNodes - a list of node ids or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes.
+// WithNodeID - a list of node ids or names to limit the returned information; use `_local` to return information from the node you're connecting to, leave empty to get information from all nodes.
 //
-func (f CatTasks) WithNodes(v ...string) func(*CatTasksRequest) {
+func (f CatTasks) WithNodeID(v ...string) func(*CatTasksRequest) {
 	return func(r *CatTasksRequest) {
-		r.Nodes = v
+		r.NodeID = v
 	}
 }
 
-// WithParentTaskID - return tasks with specified parent task ID (node_id:task_number). set to -1 to return all..
+// WithParentTask - return tasks with specified parent task ID. set to -1 to return all..
 //
-func (f CatTasks) WithParentTaskID(v string) func(*CatTasksRequest) {
+func (f CatTasks) WithParentTask(v int) func(*CatTasksRequest) {
 	return func(r *CatTasksRequest) {
-		r.ParentTaskID = v
+		r.ParentTask = &v
 	}
 }
 
@@ -252,14 +227,6 @@ func (f CatTasks) WithParentTaskID(v string) func(*CatTasksRequest) {
 func (f CatTasks) WithS(v ...string) func(*CatTasksRequest) {
 	return func(r *CatTasksRequest) {
 		r.S = v
-	}
-}
-
-// WithTime - the unit in which to display time values.
-//
-func (f CatTasks) WithTime(v string) func(*CatTasksRequest) {
-	return func(r *CatTasksRequest) {
-		r.Time = v
 	}
 }
 
@@ -313,16 +280,5 @@ func (f CatTasks) WithHeader(h map[string]string) func(*CatTasksRequest) {
 		for k, v := range h {
 			r.Header.Add(k, v)
 		}
-	}
-}
-
-// WithOpaqueID adds the X-Opaque-Id header to the HTTP request.
-//
-func (f CatTasks) WithOpaqueID(s string) func(*CatTasksRequest) {
-	return func(r *CatTasksRequest) {
-		if r.Header == nil {
-			r.Header = make(http.Header)
-		}
-		r.Header.Set("X-Opaque-Id", s)
 	}
 }

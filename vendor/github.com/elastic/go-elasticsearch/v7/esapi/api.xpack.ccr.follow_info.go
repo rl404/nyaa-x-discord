@@ -1,21 +1,4 @@
-// Licensed to Elasticsearch B.V. under one or more contributor
-// license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright
-// ownership. Elasticsearch B.V. licenses this file to you under
-// the Apache License, Version 2.0 (the "License"); you may
-// not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-//
-// Code generated from specification version 7.13.1: DO NOT EDIT
+// Code generated from specification version 7.3.0: DO NOT EDIT
 
 package esapi
 
@@ -26,8 +9,8 @@ import (
 )
 
 func newCCRFollowInfoFunc(t Transport) CCRFollowInfo {
-	return func(index []string, o ...func(*CCRFollowInfoRequest)) (*Response, error) {
-		var r = CCRFollowInfoRequest{Index: index}
+	return func(o ...func(*CCRFollowInfoRequest)) (*Response, error) {
+		var r = CCRFollowInfoRequest{}
 		for _, f := range o {
 			f(&r)
 		}
@@ -37,11 +20,9 @@ func newCCRFollowInfoFunc(t Transport) CCRFollowInfo {
 
 // ----- API Definition -------------------------------------------------------
 
-// CCRFollowInfo - Retrieves information about all follower indices, including parameters and status for each follower index
+// CCRFollowInfo - https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-follow-info.html
 //
-// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/current/ccr-get-follow-info.html.
-//
-type CCRFollowInfo func(index []string, o ...func(*CCRFollowInfoRequest)) (*Response, error)
+type CCRFollowInfo func(o ...func(*CCRFollowInfoRequest)) (*Response, error)
 
 // CCRFollowInfoRequest configures the CCR Follow Info API request.
 //
@@ -70,8 +51,10 @@ func (r CCRFollowInfoRequest) Do(ctx context.Context, transport Transport) (*Res
 	method = "GET"
 
 	path.Grow(1 + len(strings.Join(r.Index, ",")) + 1 + len("_ccr") + 1 + len("info"))
-	path.WriteString("/")
-	path.WriteString(strings.Join(r.Index, ","))
+	if len(r.Index) > 0 {
+		path.WriteString("/")
+		path.WriteString(strings.Join(r.Index, ","))
+	}
 	path.WriteString("/")
 	path.WriteString("_ccr")
 	path.WriteString("/")
@@ -95,10 +78,7 @@ func (r CCRFollowInfoRequest) Do(ctx context.Context, transport Transport) (*Res
 		params["filter_path"] = strings.Join(r.FilterPath, ",")
 	}
 
-	req, err := newRequest(method, path.String(), nil)
-	if err != nil {
-		return nil, err
-	}
+	req, _ := newRequest(method, path.String(), nil)
 
 	if len(params) > 0 {
 		q := req.URL.Query()
@@ -146,6 +126,14 @@ func (f CCRFollowInfo) WithContext(v context.Context) func(*CCRFollowInfoRequest
 	}
 }
 
+// WithIndex - a list of index patterns; use `_all` to perform the operation on all indices.
+//
+func (f CCRFollowInfo) WithIndex(v ...string) func(*CCRFollowInfoRequest) {
+	return func(r *CCRFollowInfoRequest) {
+		r.Index = v
+	}
+}
+
 // WithPretty makes the response body pretty-printed.
 //
 func (f CCRFollowInfo) WithPretty() func(*CCRFollowInfoRequest) {
@@ -188,16 +176,5 @@ func (f CCRFollowInfo) WithHeader(h map[string]string) func(*CCRFollowInfoReques
 		for k, v := range h {
 			r.Header.Add(k, v)
 		}
-	}
-}
-
-// WithOpaqueID adds the X-Opaque-Id header to the HTTP request.
-//
-func (f CCRFollowInfo) WithOpaqueID(s string) func(*CCRFollowInfoRequest) {
-	return func(r *CCRFollowInfoRequest) {
-		if r.Header == nil {
-			r.Header = make(http.Header)
-		}
-		r.Header.Set("X-Opaque-Id", s)
 	}
 }

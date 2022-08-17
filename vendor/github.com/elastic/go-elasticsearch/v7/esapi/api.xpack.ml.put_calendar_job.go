@@ -1,21 +1,4 @@
-// Licensed to Elasticsearch B.V. under one or more contributor
-// license agreements. See the NOTICE file distributed with
-// this work for additional information regarding copyright
-// ownership. Elasticsearch B.V. licenses this file to you under
-// the Apache License, Version 2.0 (the "License"); you may
-// not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//    http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
-//
-// Code generated from specification version 7.13.1: DO NOT EDIT
+// Code generated from specification version 7.3.0: DO NOT EDIT
 
 package esapi
 
@@ -37,9 +20,7 @@ func newMLPutCalendarJobFunc(t Transport) MLPutCalendarJob {
 
 // ----- API Definition -------------------------------------------------------
 
-// MLPutCalendarJob - Adds an anomaly detection job to a calendar.
-//
-// See full documentation at https://www.elastic.co/guide/en/elasticsearch/reference/current/ml-put-calendar-job.html.
+// MLPutCalendarJob -
 //
 type MLPutCalendarJob func(calendar_id string, job_id string, o ...func(*MLPutCalendarJobRequest)) (*Response, error)
 
@@ -100,10 +81,7 @@ func (r MLPutCalendarJobRequest) Do(ctx context.Context, transport Transport) (*
 		params["filter_path"] = strings.Join(r.FilterPath, ",")
 	}
 
-	req, err := newRequest(method, path.String(), nil)
-	if err != nil {
-		return nil, err
-	}
+	req, _ := newRequest(method, path.String(), nil)
 
 	if len(params) > 0 {
 		q := req.URL.Query()
@@ -193,16 +171,5 @@ func (f MLPutCalendarJob) WithHeader(h map[string]string) func(*MLPutCalendarJob
 		for k, v := range h {
 			r.Header.Add(k, v)
 		}
-	}
-}
-
-// WithOpaqueID adds the X-Opaque-Id header to the HTTP request.
-//
-func (f MLPutCalendarJob) WithOpaqueID(s string) func(*MLPutCalendarJobRequest) {
-	return func(r *MLPutCalendarJobRequest) {
-		if r.Header == nil {
-			r.Header = make(http.Header)
-		}
-		r.Header.Set("X-Opaque-Id", s)
 	}
 }
