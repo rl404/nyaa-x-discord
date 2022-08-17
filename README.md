@@ -20,12 +20,13 @@ This bot is created because my favorite anime fansubs group has disbanded and I 
 2. Rename `.env.sample` to `.env` and modify according to your configuration.
     ```properties
     # Basic config (required).
-    NXD_INTERVAL=10
-    NXD_PREFIX=!
-    NXD_TOKEN=discordtoken123
+    NXD_DISCORD_PREFIX=!
+    NXD_DISCORD_TOKEN=discordtoken123
+    NXD_CRON_INTERVAL=10m
 
     # Mongodb config (required).
-    NXD_DB_URI=mongodb://localhost:27017/nyaaXdiscord
+    NXD_DB_URI=mongodb://localhost:27017
+    NXD_DB_NAME=nyaaXdiscord
     NXD_DB_USER=root
     NXD_DB_PASSWORD=pass123
     ```
