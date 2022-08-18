@@ -52,8 +52,8 @@ func (s *service) CheckNyaa(ctx context.Context, nrApp *newrelic.Application, in
 		// Discord limit 25 fields per message.
 		for curr := 0; curr < len(templateFeeds); curr += 25 {
 			end := curr + 25
-			if end > len(feeds) {
-				end = len(feeds)
+			if end > len(templateFeeds) {
+				end = len(templateFeeds)
 			}
 
 			// Notify user.
