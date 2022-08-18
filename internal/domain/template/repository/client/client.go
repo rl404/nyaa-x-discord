@@ -109,14 +109,15 @@ func (c *Client) GetQueries(user entity.User) *discordgo.MessageEmbed {
 		}
 	}
 
+	queries := make([]string, len(user.Queries))
 	for i, q := range user.Queries {
-		user.Queries[i] = fmt.Sprintf("%v : %s", i, q)
+		queries[i] = fmt.Sprintf("%v : %s", i, q)
 	}
 
 	return &discordgo.MessageEmbed{
 		Color: entity.BlueColor,
 		Description: fmt.Sprintf("**Queries**```%s```\nYour filtered Nyaa will look like [this](%s).",
-			strings.Join(user.Queries, "\n"),
+			strings.Join(queries, "\n"),
 			nyaaEntity.GenerateURL(user.Filter, user.Category, user.Queries),
 		),
 	}
