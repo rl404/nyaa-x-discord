@@ -47,7 +47,7 @@ func (r *rss) GetFeeds(ctx context.Context, filter, category string, queries []s
 	for i, f := range rawFeeds {
 		feeds[i] = entity.Feed{
 			Title: f.Title,
-			Link:  f.Link,
+			Link:  f.GUID,
 			Size:  f.Extensions["nyaa"]["size"][0].Value,
 			Date:  r.parseDate(f.Published),
 		}
