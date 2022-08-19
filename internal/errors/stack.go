@@ -3,6 +3,7 @@ package errors
 import (
 	"context"
 
+	"github.com/newrelic/go-agent/v3/newrelic"
 	"github.com/rl404/fairy/errors"
 )
 
@@ -19,6 +20,7 @@ func Init(ctx context.Context) context.Context {
 
 // Wrap to wrap error and put it in the stack.
 func Wrap(ctx context.Context, err error, errs ...error) error {
+	newrelic.FromContext(ctx).NoticeError(err)
 	return stacker.Wrap(ctx, err, errs...)
 }
 
