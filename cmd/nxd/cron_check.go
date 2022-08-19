@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/newrelic/go-agent/v3/newrelic"
+	_nr "github.com/rl404/fairy/log/newrelic"
 	"github.com/rl404/nyaa-x-discord/internal/delivery/cron"
 	discordRepository "github.com/rl404/nyaa-x-discord/internal/domain/discord/repository"
 	discordClient "github.com/rl404/nyaa-x-discord/internal/domain/discord/repository/client"
@@ -31,12 +32,14 @@ func cronCheck() error {
 		newrelic.ConfigAppName(cfg.Newrelic.Name),
 		newrelic.ConfigLicense(cfg.Newrelic.LicenseKey),
 		newrelic.ConfigDistributedTracerEnabled(true),
+		newrelic.ConfigAppLogForwardingEnabled(true),
 	)
 	if err != nil {
 		utils.Error(err.Error())
 	} else {
 		nrApp.WaitForConnection(10 * time.Second)
 		defer nrApp.Shutdown(10 * time.Second)
+		utils.AddLog(_nr.NewFromNewrelicApp(nrApp, _nr.ErrorLevel))
 		utils.Info("newrelic initialized")
 	}
 

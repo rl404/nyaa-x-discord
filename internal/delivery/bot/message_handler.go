@@ -37,7 +37,7 @@ func (b *Bot) messageHandler(nrApp *newrelic.Application) func(*discordgo.Sessio
 
 		// Handle first time.
 		if user == nil {
-			if err = b.service.HandleFirstTime(ctx, m); err != nil {
+			if err := b.service.HandleFirstTime(ctx, m); err != nil {
 				errors.Wrap(ctx, err)
 				return
 			}

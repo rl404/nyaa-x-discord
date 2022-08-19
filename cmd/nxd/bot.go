@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/newrelic/go-agent/v3/newrelic"
+	_nr "github.com/rl404/fairy/log/newrelic"
 	_bot "github.com/rl404/nyaa-x-discord/internal/delivery/bot"
 	discordRepository "github.com/rl404/nyaa-x-discord/internal/domain/discord/repository"
 	discordClient "github.com/rl404/nyaa-x-discord/internal/domain/discord/repository/client"
@@ -34,11 +35,13 @@ func bot() error {
 		newrelic.ConfigAppName(cfg.Newrelic.Name),
 		newrelic.ConfigLicense(cfg.Newrelic.LicenseKey),
 		newrelic.ConfigDistributedTracerEnabled(true),
+		newrelic.ConfigAppLogForwardingEnabled(true),
 	)
 	if err != nil {
 		utils.Error(err.Error())
 	} else {
 		defer nrApp.Shutdown(10 * time.Second)
+		utils.AddLog(_nr.NewFromNewrelicApp(nrApp, _nr.ErrorLevel))
 		utils.Info("newrelic initialized")
 	}
 

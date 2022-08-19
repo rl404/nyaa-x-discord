@@ -131,6 +131,8 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/prometheus/client_model v0.0.0-20190812154241-14fe0d1b01d4/go.mod h1:xMI15A0UPsDsEKsMN9yxemIoYk6Tm2C1GtYGdfGttqA=
 github.com/rl404/fairy v0.18.1 h1:/2EPHY8EN0cGIOYFiy8r5DIVx9BY5GCXE82TcvEGoNk=
 github.com/rl404/fairy v0.18.1/go.mod h1:3He54qz0Z7V+nAaDl9MMozGI8w6nG4U/IIIGqRnSVgw=
+github.com/rl404/fairy v0.19.0 h1:qXP67xcggYxDfK1PgVmjrNQS0ljgGNh6QeEr18cr/O8=
+github.com/rl404/fairy v0.19.0/go.mod h1:3He54qz0Z7V+nAaDl9MMozGI8w6nG4U/IIIGqRnSVgw=
 github.com/rogpeppe/fastuuid v1.2.0/go.mod h1:jVj6XXZzXRy/MSR5jhDC/2q6DgLz+nrA6LYCDYWNEvQ=
 github.com/rogpeppe/go-internal v1.6.1/go.mod h1:xXDCJY+GAPziupqXw64V24skbSoqbTEfhy4qGm1nDQc=
 github.com/rogpeppe/go-internal v1.8.0/go.mod h1:WmiCO8CzOY8rg0OYDC4/i/2WRWAB6poM+XZ2dLUbcbE=
