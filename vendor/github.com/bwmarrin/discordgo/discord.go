@@ -17,6 +17,8 @@ import (
 	"net/http"
 	"runtime"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 // VERSION of DiscordGo, follows Semantic Versioning. (http://semver.org/)
@@ -41,12 +43,13 @@ func New(token string) (s *Session, err error) {
 		ShardCount:             1,
 		MaxRestRetries:         3,
 		Client:                 &http.Client{Timeout: (20 * time.Second)},
+		Dialer:                 websocket.DefaultDialer,
 		UserAgent:              "DiscordBot (https://github.com/bwmarrin/discordgo, v" + VERSION + ")",
 		sequence:               new(int64),
 		LastHeartbeatAck:       time.Now().UTC(),
 	}
 
-	// Initilize the Identify Package with defaults
+	// Initialize the Identify Package with defaults
 	// These can be modified prior to calling Open()
 	s.Identify.Compress = true
 	s.Identify.LargeThreshold = 250
