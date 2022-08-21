@@ -8,9 +8,9 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/mmcdole/gofeed v1.1.3
-	github.com/newrelic/go-agent/v3 v3.18.0
+	github.com/newrelic/go-agent/v3 v3.18.1
 	github.com/newrelic/go-agent/v3/integrations/nrmongo v1.0.2
-	github.com/rl404/fairy v0.19.0
+	github.com/rl404/fairy v0.20.0
 	github.com/spf13/cobra v1.5.0
 	go.mongodb.org/mongo-driver v1.10.1
 	golang.org/x/text v0.3.7
