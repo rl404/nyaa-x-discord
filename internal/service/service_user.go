@@ -23,6 +23,9 @@ func (s *service) GetUserByUserID(ctx context.Context, UserID string) (*User, er
 	if err != nil {
 		return nil, errors.Wrap(ctx, err)
 	}
+	if user == nil {
+		return nil, nil
+	}
 	return &User{
 		UserID:    user.UserID,
 		ChannelID: user.ChannelID,
