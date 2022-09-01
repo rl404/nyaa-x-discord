@@ -48,7 +48,7 @@ jobs:
             rl404/nyaa-x-discord:${{ env.IMG_TAG }}
             ghcr.io/rl404/nyaa-x-discord:latest
             ghcr.io/rl404/nyaa-x-discord:${{ env.IMG_TAG }}
-   deploy:
+  deploy:
     name: Deploy
     needs: publish_image
     runs-on: ubuntu-latest
