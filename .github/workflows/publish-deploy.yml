@@ -1,17 +1,21 @@
-name: publish
+name: publish & deploy
 
 on:
   push:
     tags:
       - "*"
+
 jobs:
   publish_image:
     name: Build and push nyaa-x-discord image
     runs-on: ubuntu-latest
+    outputs:
+      img_tag: ${{ steps.tag.outputs.img_tag }}
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
       - name: Remove 'v' from tag
+        id: tag
         env:
           github_ref: ${{ github.ref }}
         run: |
@@ -44,3 +48,25 @@ jobs:
             rl404/nyaa-x-discord:${{ env.IMG_TAG }}
             ghcr.io/rl404/nyaa-x-discord:latest
             ghcr.io/rl404/nyaa-x-discord:${{ env.IMG_TAG }}
+   deploy:
+    name: Deploy
+    needs: publish_image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Auth gcloud
+        uses: google-github-actions/auth@v0
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v0
+      - name: Setup GKE
+        uses: google-github-actions/get-gke-credentials@v0
+        with:
+          cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
+          project_id: ${{ secrets.GKE_PROJECT_ID }}
+          location: ${{ secrets.GKE_LOCATION }}
+      - name: Deploy
+        run: |
+          kubectl set image deployment ${{ secrets.GKE_BOT_DEPLOYMENT_NAME }} ${{ secrets.GKE_BOT_CONTAINER_NAME }}=rl404/nyaa-x-discord:${{ needs.publish_image.outputs.img_tag }}
+          kubectl set image cronjob ${{ secrets.GKE_CRON_DEPLOYMENT_NAME }} ${{ secrets.GKE_CRON_CONTAINER_NAME }}=rl404/nyaa-x-discord:${{ needs.publish_image.outputs.img_tag }}
