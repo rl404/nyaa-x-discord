@@ -305,8 +305,8 @@ github.com/mwitkow/go-conntrack v0.0.0-20190716064945-2f068394615f/go.mod h1:qRW
 github.com/newrelic/go-agent/v3 v3.6.0/go.mod h1:1A1dssWBwzB7UemzRU6ZVaGDsI+cEn5/bNxI0wiYlIc=
 github.com/newrelic/go-agent/v3 v3.12.0/go.mod h1:1A1dssWBwzB7UemzRU6ZVaGDsI+cEn5/bNxI0wiYlIc=
 github.com/newrelic/go-agent/v3 v3.18.1/go.mod h1:BFJOlbZWRlPTXKYIC1TTTtQKTnYntEJaU0VU507hDc0=
-github.com/newrelic/go-agent/v3 v3.19.0 h1:nz1fmqZxbjlVcSJO8gKEPw/CG1JLLEHI4TbSBT98x68=
-github.com/newrelic/go-agent/v3 v3.19.0/go.mod h1:BFJOlbZWRlPTXKYIC1TTTtQKTnYntEJaU0VU507hDc0=
+github.com/newrelic/go-agent/v3 v3.19.1 h1:C/ltQvzPwpkUNPvUpgTT8cDht+kzfSm3UTWxViBQvAU=
+github.com/newrelic/go-agent/v3 v3.19.1/go.mod h1:BFJOlbZWRlPTXKYIC1TTTtQKTnYntEJaU0VU507hDc0=
 github.com/newrelic/go-agent/v3/integrations/nrgrpc v1.3.1/go.mod h1:2q0u6qkNJ4ClDt920A4r+NpcO370lFze1NF4OPJjAks=
 github.com/newrelic/go-agent/v3/integrations/nrmongo v1.0.2 h1:1yI2B9BRMqLWhMIY5EE5fzuKkuT7rZxxvLVi+uFSwl4=
 github.com/newrelic/go-agent/v3/integrations/nrmongo v1.0.2/go.mod h1:iz2tq3oBn0UJhUyiDEgSFNamtGS3iuH0/VA1hHjew9c=
