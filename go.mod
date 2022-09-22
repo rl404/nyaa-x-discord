@@ -8,7 +8,7 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/mmcdole/gofeed v1.1.3
-	github.com/newrelic/go-agent/v3 v3.19.1
+	github.com/newrelic/go-agent/v3 v3.19.2
 	github.com/newrelic/go-agent/v3/integrations/nrmongo v1.0.3
 	github.com/rl404/fairy v0.20.0
 	github.com/spf13/cobra v1.5.0
@@ -56,6 +56,6 @@ require (
 	golang.org/x/sync v0.0.0-20220601150217-0de741cfad7f // indirect
 	golang.org/x/sys v0.0.0-20220811171246-fbc7d0a398ab // indirect
 	google.golang.org/genproto v0.0.0-20220624142145-8cd45d7dbd1f // indirect
-	google.golang.org/grpc v1.48.0 // indirect
+	google.golang.org/grpc v1.49.0 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 )
