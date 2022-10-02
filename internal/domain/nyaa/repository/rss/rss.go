@@ -66,6 +66,10 @@ func (r *rss) getRawFeeds(ctx context.Context, filter, category string, queries 
 			end = len(queries)
 		}
 
+		if curr == end {
+			break
+		}
+
 		feed, err := r.parse(ctx, filter, category, queries[curr:end])
 		if err != nil {
 			return nil, errors.Wrap(ctx, err)
