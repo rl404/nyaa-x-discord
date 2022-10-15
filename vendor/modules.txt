@@ -31,7 +31,7 @@ github.com/go-playground/mold/v4/modifiers
 # github.com/go-playground/universal-translator v0.18.0
 ## explicit; go 1.13
 github.com/go-playground/universal-translator
-# github.com/go-playground/validator/v10 v10.11.0
+# github.com/go-playground/validator/v10 v10.11.1
 ## explicit; go 1.13
 github.com/go-playground/validator/v10
 # github.com/golang/protobuf v1.5.2
@@ -114,7 +114,7 @@ github.com/newrelic/go-agent/v3/integrations/nrmongo
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
-# github.com/rl404/fairy v0.20.0
+# github.com/rl404/fairy v0.20.1
 ## explicit; go 1.17
 github.com/rl404/fairy/errors
 github.com/rl404/fairy/errors/stack
@@ -131,7 +131,7 @@ github.com/rl404/fairy/log/zap
 github.com/rl404/fairy/log/zerolog
 github.com/rl404/fairy/validation
 github.com/rl404/fairy/validation/playground
-# github.com/rs/zerolog v1.27.0
+# github.com/rs/zerolog v1.28.0
 ## explicit; go 1.15
 github.com/rs/zerolog
 github.com/rs/zerolog/internal/cbor
@@ -206,10 +206,11 @@ go.uber.org/atomic
 # go.uber.org/multierr v1.7.0
 ## explicit; go 1.14
 go.uber.org/multierr
-# go.uber.org/zap v1.22.0
+# go.uber.org/zap v1.23.0
 ## explicit; go 1.18
 go.uber.org/zap
 go.uber.org/zap/buffer
+go.uber.org/zap/internal
 go.uber.org/zap/internal/bufferpool
 go.uber.org/zap/internal/color
 go.uber.org/zap/internal/exit
@@ -223,7 +224,7 @@ golang.org/x/crypto/ocsp
 golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/salsa20/salsa
 golang.org/x/crypto/sha3
-# golang.org/x/net v0.0.0-20220812174116-3211cb980234
+# golang.org/x/net v0.0.0-20220909164309-bea034e7d591
 ## explicit; go 1.17
 golang.org/x/net/html
 golang.org/x/net/html/atom
@@ -267,10 +268,10 @@ golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
-# google.golang.org/genproto v0.0.0-20220624142145-8cd45d7dbd1f
-## explicit; go 1.15
+# google.golang.org/genproto v0.0.0-20220822174746-9e6da59bd2fc
+## explicit; go 1.19
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.49.0
+# google.golang.org/grpc v1.50.0
 ## explicit; go 1.17
 google.golang.org/grpc
 google.golang.org/grpc/attributes
