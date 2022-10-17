@@ -13,7 +13,7 @@ require (
 	github.com/rl404/fairy v0.20.1
 	github.com/spf13/cobra v1.6.0
 	go.mongodb.org/mongo-driver v1.10.3
-	golang.org/x/text v0.3.8
+	golang.org/x/text v0.4.0
 )
 
 require (
