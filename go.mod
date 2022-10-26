@@ -11,7 +11,7 @@ require (
 	github.com/newrelic/go-agent/v3 v3.19.2
 	github.com/newrelic/go-agent/v3/integrations/nrmongo v1.0.3
 	github.com/rl404/fairy v0.20.2
-	github.com/spf13/cobra v1.6.0
+	github.com/spf13/cobra v1.6.1
 	go.mongodb.org/mongo-driver v1.10.3
 	golang.org/x/text v0.4.0
 )
