@@ -114,7 +114,7 @@ github.com/newrelic/go-agent/v3/integrations/nrmongo
 # github.com/pkg/errors v0.9.1
 ## explicit
 github.com/pkg/errors
-# github.com/rl404/fairy v0.20.2
+# github.com/rl404/fairy v0.21.0
 ## explicit; go 1.17
 github.com/rl404/fairy/errors
 github.com/rl404/fairy/errors/stack
