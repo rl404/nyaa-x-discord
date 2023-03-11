@@ -3,7 +3,7 @@ module github.com/rl404/nyaa-x-discord
 go 1.17
 
 require (
-	github.com/bwmarrin/discordgo v0.27.0
+	github.com/bwmarrin/discordgo v0.27.1
 	github.com/eapache/go-resiliency v1.3.0
 	github.com/joho/godotenv v1.5.1
 	github.com/kelseyhightower/envconfig v1.4.0
