@@ -10,7 +10,7 @@ require (
 	github.com/mmcdole/gofeed v1.2.1
 	github.com/newrelic/go-agent/v3 v3.23.1
 	github.com/newrelic/go-agent/v3/integrations/nrmongo v1.1.0
-	github.com/rl404/fairy v0.22.2
+	github.com/rl404/fairy v0.22.3
 	github.com/spf13/cobra v1.7.0
 	go.mongodb.org/mongo-driver v1.12.0
 	golang.org/x/text v0.11.0
@@ -24,6 +24,7 @@ require (
 	github.com/elastic/go-elasticsearch/v8 v8.8.2 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
 	github.com/go-chi/chi v4.1.2+incompatible // indirect
+	github.com/go-chi/chi/v5 v5.0.8 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/mold/v4 v4.5.0 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
