@@ -4,7 +4,7 @@ LABEL stage="nxd_builder"
 WORKDIR /nxd
 COPY . .
 WORKDIR /nxd/cmd/nxd
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -installsuffix cgo -mod vendor -o nxd
+RUN CGO_ENABLED=0 go build -a -installsuffix cgo -o nxd
 
 # New stage from scratch
 FROM alpine:3.18
