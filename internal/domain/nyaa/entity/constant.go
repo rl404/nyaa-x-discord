@@ -38,7 +38,7 @@ var Categories KeyValues = KeyValues{
 	{Key: "6_2", Value: "Games"},
 }
 
-//  KeyValues is array of key values.
+// KeyValues is array of key values.
 type KeyValues []keyValue
 
 type keyValue struct {
