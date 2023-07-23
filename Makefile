@@ -2,7 +2,7 @@
 GO_CMD   := go
 GO_FMT   := $(GO_CMD) fmt
 GO_CLEAN := $(GO_CMD) clean
-GO_BUILD := $(GO_CMD) build -mod vendor
+GO_BUILD := $(GO_CMD) build
 
 # Base golangci-lint commands.
 GCL_CMD := golangci-lint

@@ -14,59 +14,65 @@ This bot is created because my favorite anime fansubs group has disbanded and I 
 ## Steps
 
 1. Git clone this repo.
-    ```bash
-    git clone github.com/rl404/nyaa-x-discord
-    ```
+   ```bash
+   git clone github.com/rl404/nyaa-x-discord
+   ```
 2. Rename `.env.sample` to `.env` and modify according to your configuration.
-    ```properties
-    # Basic config (required).
-    NXD_DISCORD_PREFIX=!
-    NXD_DISCORD_TOKEN=discordtoken123
-    NXD_CRON_INTERVAL=10m
 
-    # Mongodb config (required).
-    NXD_DB_URI=mongodb://localhost:27017
-    NXD_DB_NAME=nyaaXdiscord
-    NXD_DB_USER=root
-    NXD_DB_PASSWORD=pass123
-    ```
+   ```properties
+   # Basic config (required).
+   NXD_DISCORD_PREFIX=!
+   NXD_DISCORD_TOKEN=discordtoken123
+   NXD_CRON_INTERVAL=10m
+
+   # Mongodb config (required).
+   NXD_DB_URI=mongodb://localhost:27017
+   NXD_DB_NAME=nyaaXdiscord
+   NXD_DB_USER=root
+   NXD_DB_PASSWORD=pass123
+   ```
+
 3. Run.
-    ```bash
-    # for bot
-    make bot
-    # for checker
-    make cron
 
-    # or using docker
-    # for bot
-    make docker-bot
-    # for checker
-    make docker-cron
+   ```bash
+   # for bot
+   make bot
+   # for checker
+   make cron
 
-    # to stop docker
-    make docker-stop
-    ```
+   # or using docker
+   # for bot
+   make docker-bot
+   # for checker
+   make docker-cron
+
+   # to stop docker
+   make docker-stop
+   ```
+
 4. Invite the bot to your server.
 5. DM the bot `!ping`.
 6. You will get welcome message from the bot.
-    ```
-    Welcome rl404
-    It looks like this is your first time using this bot.
 
-    This bot will help you keeping track of Nyaa update according to your   query/filter.
+   ```
+   Welcome rl404
+   It looks like this is your first time using this bot.
 
-    How to Start
-    1. Set filter.
-    2. Set category.
-    3. Set query.
-    4. Turn on subscription.
-    5. Wait a bit and I will notify you if there is a new update.
+   This bot will help you keeping track of Nyaa update according to your   query/filter.
 
-    !help to see all command list.
-    ```
-6. Have fun.
+   How to Start
+   1. Set filter.
+   2. Set category.
+   3. Set query.
+   4. Turn on subscription.
+   5. Wait a bit and I will notify you if there is a new update.
 
-**note: you and your bot must have at least 1 common server so you and the bot can DM each other.*
+   !help to see all command list.
+   ```
+
+7. Have fun.
+
+\*_note: you and your bot must have at least 1 common server so you and the bot can DM each other._
 
 ## Bot Commands
 
