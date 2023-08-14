@@ -7,7 +7,7 @@ github.com/andybalholm/cascadia
 # github.com/bwmarrin/discordgo v0.27.1
 ## explicit; go 1.13
 github.com/bwmarrin/discordgo
-# github.com/eapache/go-resiliency v1.3.0
+# github.com/eapache/go-resiliency v1.4.0
 ## explicit; go 1.13
 github.com/eapache/go-resiliency/retrier
 # github.com/elastic/elastic-transport-go/v8 v8.3.0
