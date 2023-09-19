@@ -3,7 +3,7 @@ name: publish & deploy
 on:
   push:
     tags:
-      - "*"
+      - "v*"
 
 jobs:
   publish_image:
@@ -13,7 +13,7 @@ jobs:
       img_tag: ${{ steps.tag.outputs.img_tag }}
     steps:
       - name: Check out code into the Go module directory
-        uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
+        uses: actions/checkout@v4
       - name: Remove 'v' from tag
         id: tag
         env:
@@ -38,6 +38,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.CR_PAT }}
+      - name: Auth gcloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+      - name: Setup gcloud
+        uses: google-github-actions/setup-gcloud@v1
+      - name: Setup docker
+        run: |
+          gcloud --quiet auth configure-docker
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
@@ -49,25 +58,59 @@ jobs:
             rl404/nyaa-x-discord:${{ env.IMG_TAG }}
             ghcr.io/rl404/nyaa-x-discord:latest
             ghcr.io/rl404/nyaa-x-discord:${{ env.IMG_TAG }}
+            ${{ secrets.GCR_HOSTNAME }}/${{ secrets.GCP_PROJECT_ID }}/nyaa-x-discord:${{ env.IMG_TAG }}
   deploy:
     name: Deploy
     needs: publish_image
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./deployment/terraform
     steps:
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4
+      - uses: actions/checkout@v4
       - name: Auth gcloud
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
-      - name: Setup gcloud
-        uses: google-github-actions/setup-gcloud@v1
-      - name: Setup GKE
-        uses: google-github-actions/get-gke-credentials@v1
-        with:
-          cluster_name: ${{ secrets.GKE_CLUSTER_NAME }}
-          project_id: ${{ secrets.GKE_PROJECT_ID }}
-          location: ${{ secrets.GKE_LOCATION }}
-      - name: Deploy
-        run: |
-          kubectl set image deployment ${{ secrets.GKE_BOT_DEPLOYMENT_NAME }} ${{ secrets.GKE_BOT_CONTAINER_NAME }}=rl404/nyaa-x-discord:${{ needs.publish_image.outputs.img_tag }}
-          kubectl set image cronjob ${{ secrets.GKE_CRON_DEPLOYMENT_NAME }} ${{ secrets.GKE_CRON_CONTAINER_NAME }}=rl404/nyaa-x-discord:${{ needs.publish_image.outputs.img_tag }}
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+      - name: Setup Terraform Variables
+        run: |-
+          cat > pipeline.auto.tfvars <<EOF
+          gcp_project_id           = "${{ secrets.GCP_PROJECT_ID }}"
+          gcp_region               = "${{ secrets.GCP_REGION }}"
+          gke_cluster_name         = "${{ secrets.GKE_CLUSTER_NAME }}"
+          gke_location             = "${{ secrets.GKE_LOCATION }}"
+          gke_pool_name            = "${{ secrets.GKE_POOL_NAME }}"
+          gke_node_preemptible     = "${{ secrets.GKE_NODE_PREEMPTIBLE }}"
+          gke_node_machine_type    = "${{ secrets.GKE_NODE_MACHINE_TYPE }}"
+          gcr_image_name           = "${{ secrets.GCR_HOSTNAME }}/${{ secrets.GCP_PROJECT_ID }}/nyaa-x-discord:${{ needs.publish_image.outputs.img_tag }}"
+          gke_deployment_name      = "${{ secrets.GKE_DEPLOYMENT_NAME }}"
+          gke_cron_name            = "${{ secrets.GKE_CRON_NAME }}"
+          gke_cron_schedule        = "${{ secrets.GKE_CRON_SCHEDULE }}"
+          nxd_discord_prefix       = "${{ secrets.NXD_DISCORD_PREFIX }}"
+          nxd_discord_token        = "${{ secrets.NXD_DISCORD_TOKEN }}"
+          nxd_db_uri               = "${{ secrets.NXD_DB_URI }}"
+          nxd_db_name              = "${{ secrets.NXD_DB_NAME }}"
+          nxd_db_user              = "${{ secrets.NXD_DB_USER }}"
+          nxd_db_password          = "${{ secrets.NXD_DB_PASSWORD }}"
+          nxd_cron_interval        = "${{ secrets.NXD_CRON_INTERVAL }}"
+          nxd_log_json             = "${{ secrets.NXD_LOG_JSON }}"
+          nxd_log_level            = "${{ secrets.NXD_LOG_LEVEL }}"
+          nxd_newrelic_name        = "${{ secrets.NXD_NEWRELIC_NAME }}"
+          nxd_newrelic_license_key = "${{ secrets.NXD_NEWRELIC_LICENSE_KEY }}"
+          EOF
+      - name: Init Terraform
+        run: terraform init -backend-config "bucket=${{ secrets.GCS_BUCKET }}"
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+      - name: Format Terraform
+        run: terraform fmt -check
+      - name: Plan Terraform
+        run: terraform plan -input=false
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+      - name: Apply Terraform
+        run: terraform apply -auto-approve -input=false
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
