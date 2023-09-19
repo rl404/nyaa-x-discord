@@ -28,10 +28,6 @@ resource "kubernetes_cron_job_v1" "cron" {
               command = ["./nxd"]
               args    = ["cron", "check"]
               env {
-                name  = "NAKA_DISCORD_TOKEN"
-                value = var.naka_discord_token
-              }
-              env {
                 name  = "NXD_DISCORD_PREFIX"
                 value = var.nxd_discord_prefix
               }
