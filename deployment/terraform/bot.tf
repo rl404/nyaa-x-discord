@@ -26,10 +26,6 @@ resource "kubernetes_deployment" "bot" {
           command = ["./nxd"]
           args    = ["bot"]
           env {
-            name  = "NAKA_DISCORD_TOKEN"
-            value = var.naka_discord_token
-          }
-          env {
             name  = "NXD_DISCORD_PREFIX"
             value = var.nxd_discord_prefix
           }
