@@ -7,7 +7,8 @@ resource "kubernetes_cron_job_v1" "cron" {
   }
 
   spec {
-    schedule = var.gke_cron_schedule
+    schedule           = var.gke_cron_schedule
+    concurrency_policy = "Forbid"
     job_template {
       metadata {
         labels = {
@@ -22,6 +23,7 @@ resource "kubernetes_cron_job_v1" "cron" {
             }
           }
           spec {
+            restart_policy = "Never"
             container {
               name    = var.gke_cron_name
               image   = var.gcr_image_name
