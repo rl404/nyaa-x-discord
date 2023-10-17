@@ -6,22 +6,22 @@ import (
 	"strings"
 
 	"github.com/bwmarrin/discordgo"
+	"github.com/rl404/fairy/errors/stack"
 	nyaaEntity "github.com/rl404/nyaa-x-discord/internal/domain/nyaa/entity"
 	"github.com/rl404/nyaa-x-discord/internal/domain/template/entity"
-	"github.com/rl404/nyaa-x-discord/internal/errors"
 	"github.com/rl404/nyaa-x-discord/internal/utils"
 )
 
 // HandlePing to handle ping.
 func (s *service) HandlePing(ctx context.Context, m *discordgo.MessageCreate) error {
 	_, err := s.discord.SendMessage(ctx, m.ChannelID, "pong")
-	return errors.Wrap(ctx, err)
+	return stack.Wrap(ctx, err)
 }
 
 // HandleHelp to handle help.
 func (s *service) HandleHelp(ctx context.Context, m *discordgo.MessageCreate) error {
 	_, err := s.discord.SendMessageEmbed(ctx, m.ChannelID, s.template.GetHelp())
-	return errors.Wrap(ctx, err)
+	return stack.Wrap(ctx, err)
 }
 
 // HandleFilter to handle filter command.
@@ -32,22 +32,22 @@ func (s *service) HandleFilter(ctx context.Context, user User, args []string) er
 			Category: user.Category,
 			Queries:  user.Queries,
 		}))
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	// Invalid command.
 	if len(args) != 3 || args[1] != "set" || nyaaEntity.Filters.GetValueByKey(args[2]) == "" {
-		return errors.Wrap(ctx, s.handleInvalid(ctx, user.ChannelID))
+		return stack.Wrap(ctx, s.handleInvalid(ctx, user.ChannelID))
 	}
 
 	user.Filter = args[2]
 
 	if err := s.user.UpdateFilterByUserID(ctx, user.UserID, user.Filter); err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	if err := s.handleSuccess(ctx, user); err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	return nil
@@ -61,22 +61,22 @@ func (s *service) HandleCategory(ctx context.Context, user User, args []string) 
 			Category: user.Category,
 			Queries:  user.Queries,
 		}))
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	// Invalid command.
 	if len(args) != 3 || args[1] != "set" || nyaaEntity.Categories.GetValueByKey(args[2]) == "" {
-		return errors.Wrap(ctx, s.handleInvalid(ctx, user.ChannelID))
+		return stack.Wrap(ctx, s.handleInvalid(ctx, user.ChannelID))
 	}
 
 	user.Category = args[2]
 
 	if err := s.user.UpdateCategoryByUserID(ctx, user.UserID, user.Category); err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	if err := s.handleSuccess(ctx, user); err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	return nil
@@ -90,12 +90,12 @@ func (s *service) HandleQuery(ctx context.Context, user User, args []string) err
 			Category: user.Category,
 			Queries:  user.Queries,
 		}))
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	// Invalid command.
 	if len(args) < 3 {
-		return errors.Wrap(ctx, s.handleInvalid(ctx, user.ChannelID))
+		return stack.Wrap(ctx, s.handleInvalid(ctx, user.ChannelID))
 	}
 
 	switch args[1] {
@@ -110,15 +110,15 @@ func (s *service) HandleQuery(ctx context.Context, user User, args []string) err
 		}
 		user.Queries = queries
 	default:
-		return errors.Wrap(ctx, s.handleInvalid(ctx, user.ChannelID))
+		return stack.Wrap(ctx, s.handleInvalid(ctx, user.ChannelID))
 	}
 
 	if err := s.user.UpdateQueriesByUserID(ctx, user.UserID, user.Queries); err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	if err := s.handleSuccess(ctx, user); err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	return nil
@@ -133,22 +133,22 @@ func (s *service) HandleSubscribe(ctx context.Context, user User, args []string)
 			Queries:   user.Queries,
 			Subscribe: user.Subscribe,
 		}))
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	// Invalid command.
 	if len(args) != 2 || (args[1] != "on" && args[1] != "off") {
-		return errors.Wrap(ctx, s.handleInvalid(ctx, user.ChannelID))
+		return stack.Wrap(ctx, s.handleInvalid(ctx, user.ChannelID))
 	}
 
 	user.Subscribe = args[1] == "on"
 
 	if err := s.user.UpdateSubscribeByUserID(ctx, user.UserID, user.Subscribe); err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	if err := s.handleSuccess(ctx, user); err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	return nil
@@ -156,7 +156,7 @@ func (s *service) HandleSubscribe(ctx context.Context, user User, args []string)
 
 func (s *service) handleInvalid(ctx context.Context, channelID string) error {
 	_, err := s.discord.SendMessage(ctx, channelID, s.template.GetInvalid())
-	return errors.Wrap(ctx, err)
+	return stack.Wrap(ctx, err)
 }
 
 func (s *service) handleSuccess(ctx context.Context, user User) error {
@@ -165,5 +165,5 @@ func (s *service) handleSuccess(ctx context.Context, user User) error {
 		Category: user.Category,
 		Queries:  user.Queries,
 	}))
-	return errors.Wrap(ctx, err)
+	return stack.Wrap(ctx, err)
 }

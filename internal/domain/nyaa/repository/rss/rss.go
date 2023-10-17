@@ -8,9 +8,10 @@ import (
 	"github.com/eapache/go-resiliency/retrier"
 	"github.com/mmcdole/gofeed"
 	"github.com/newrelic/go-agent/v3/newrelic"
+	"github.com/rl404/fairy/errors/stack"
 	"github.com/rl404/fairy/limit"
+	"github.com/rl404/fairy/limit/atomic"
 	"github.com/rl404/nyaa-x-discord/internal/domain/nyaa/entity"
-	"github.com/rl404/nyaa-x-discord/internal/errors"
 )
 
 type rss struct {
@@ -21,8 +22,6 @@ type rss struct {
 
 // New to create new nyaa rss.
 func New() *rss {
-	limiter, _ := limit.New(limit.Atomic, 1, time.Second)
-
 	parser := gofeed.NewParser()
 	parser.Client = &http.Client{
 		Timeout:   5 * time.Second,
@@ -31,7 +30,7 @@ func New() *rss {
 
 	return &rss{
 		parser:  parser,
-		limiter: limiter,
+		limiter: atomic.New(1, time.Second),
 		retrier: retrier.New(retrier.ConstantBackoff(5, time.Second), nil),
 	}
 }
@@ -40,7 +39,7 @@ func New() *rss {
 func (r *rss) GetFeeds(ctx context.Context, filter, category string, queries []string) ([]entity.Feed, error) {
 	rawFeeds, err := r.getRawFeeds(ctx, filter, category, queries)
 	if err != nil {
-		return nil, errors.Wrap(ctx, err)
+		return nil, stack.Wrap(ctx, err)
 	}
 
 	feeds := make([]entity.Feed, len(rawFeeds))
@@ -72,7 +71,7 @@ func (r *rss) getRawFeeds(ctx context.Context, filter, category string, queries 
 
 		feed, err := r.parse(ctx, filter, category, queries[curr:end])
 		if err != nil {
-			return nil, errors.Wrap(ctx, err)
+			return nil, stack.Wrap(ctx, err)
 		}
 
 		items = append(items, feed.Items...)
@@ -87,11 +86,11 @@ func (r *rss) parse(ctx context.Context, filter, category string, queries []stri
 	if err2 := r.retrier.RunCtx(ctx, func(ctx context.Context) error {
 		feed, err = r.parser.ParseURLWithContext(entity.GenerateURL(filter, category, queries, true), ctx)
 		if err != nil {
-			return err
+			return stack.Wrap(ctx, err)
 		}
 		return nil
 	}); err2 != nil {
-		return nil, errors.Wrap(ctx, err2)
+		return nil, stack.Wrap(ctx, err2)
 	}
 
 	return feed, nil

@@ -5,15 +5,15 @@ import (
 	"time"
 
 	"github.com/newrelic/go-agent/v3/newrelic"
+	"github.com/rl404/fairy/errors/stack"
 	"github.com/rl404/nyaa-x-discord/internal/domain/template/entity"
-	"github.com/rl404/nyaa-x-discord/internal/errors"
 )
 
 // CheckNyaa to check nyaa update.
 func (s *service) CheckNyaa(ctx context.Context, nrApp *newrelic.Application, interval time.Duration) error {
 	users, err := s.user.GetSubscribedUsers(ctx)
 	if err != nil {
-		return errors.Wrap(ctx, err)
+		return stack.Wrap(ctx, err)
 	}
 
 	limitDate := time.Now().UTC().Add(-interval)
@@ -21,7 +21,7 @@ func (s *service) CheckNyaa(ctx context.Context, nrApp *newrelic.Application, in
 	for _, user := range users {
 		feeds, err := s.nyaa.GetFeeds(ctx, user.Filter, user.Category, user.Queries)
 		if err != nil {
-			errors.Wrap(ctx, err)
+			stack.Wrap(ctx, err)
 			continue
 		}
 
@@ -58,7 +58,7 @@ func (s *service) CheckNyaa(ctx context.Context, nrApp *newrelic.Application, in
 
 			// Notify user.
 			if _, err := s.discord.SendMessageEmbed(ctx, user.ChannelID, s.template.GetNyaaUpdate(templateFeeds[curr:end])); err != nil {
-				errors.Wrap(ctx, err)
+				stack.Wrap(ctx, err)
 			}
 		}
 	}

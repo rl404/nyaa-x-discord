@@ -7,12 +7,12 @@ import (
 
 	"github.com/bwmarrin/discordgo"
 	"github.com/newrelic/go-agent/v3/newrelic"
-	"github.com/rl404/nyaa-x-discord/internal/errors"
+	"github.com/rl404/fairy/errors/stack"
 )
 
 func (b *Bot) messageHandler(nrApp *newrelic.Application) func(*discordgo.Session, *discordgo.MessageCreate) {
 	return func(s *discordgo.Session, m *discordgo.MessageCreate) {
-		ctx := errors.Init(context.Background())
+		ctx := stack.Init(context.Background())
 		defer b.log(ctx)
 
 		// Ignore all messages created by the bot itself.
@@ -31,14 +31,14 @@ func (b *Bot) messageHandler(nrApp *newrelic.Application) func(*discordgo.Sessio
 		// Get user data.
 		user, err := b.service.GetUserByUserID(ctx, m.Author.ID)
 		if err != nil {
-			errors.Wrap(ctx, err)
+			stack.Wrap(ctx, err)
 			return
 		}
 
 		// Handle first time.
 		if user == nil {
 			if err := b.service.HandleFirstTime(ctx, m); err != nil {
-				errors.Wrap(ctx, err)
+				stack.Wrap(ctx, err)
 				return
 			}
 		}
@@ -54,17 +54,17 @@ func (b *Bot) messageHandler(nrApp *newrelic.Application) func(*discordgo.Sessio
 
 		switch args[0] {
 		case "ping":
-			errors.Wrap(ctx, b.service.HandlePing(ctx, m))
+			stack.Wrap(ctx, b.service.HandlePing(ctx, m))
 		case "help":
-			errors.Wrap(ctx, b.service.HandleHelp(ctx, m))
+			stack.Wrap(ctx, b.service.HandleHelp(ctx, m))
 		case "filter":
-			errors.Wrap(ctx, b.service.HandleFilter(ctx, *user, args))
+			stack.Wrap(ctx, b.service.HandleFilter(ctx, *user, args))
 		case "category":
-			errors.Wrap(ctx, b.service.HandleCategory(ctx, *user, args))
+			stack.Wrap(ctx, b.service.HandleCategory(ctx, *user, args))
 		case "query":
-			errors.Wrap(ctx, b.service.HandleQuery(ctx, *user, args))
+			stack.Wrap(ctx, b.service.HandleQuery(ctx, *user, args))
 		case "subscribe":
-			errors.Wrap(ctx, b.service.HandleSubscribe(ctx, *user, args))
+			stack.Wrap(ctx, b.service.HandleSubscribe(ctx, *user, args))
 		}
 	}
 }

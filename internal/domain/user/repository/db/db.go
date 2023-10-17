@@ -3,6 +3,7 @@ package db
 import (
 	"context"
 
+	"github.com/rl404/fairy/errors/stack"
 	"github.com/rl404/nyaa-x-discord/internal/domain/user/entity"
 	"github.com/rl404/nyaa-x-discord/internal/errors"
 	"go.mongodb.org/mongo-driver/bson"
@@ -27,7 +28,7 @@ func (db *db) GetByUserID(ctx context.Context, userID string) (*entity.User, err
 		if err == mongo.ErrNoDocuments {
 			return nil, nil
 		}
-		return nil, errors.Wrap(ctx, errors.ErrInternalDB, err)
+		return nil, stack.Wrap(ctx, err, errors.ErrInternalDB)
 	}
 	return user.toEntity(), nil
 }
@@ -42,7 +43,7 @@ func (db *db) Create(ctx context.Context, userID, channelID string) error {
 		Queries:   []string{},
 		Subscribe: false,
 	}); err != nil {
-		return errors.Wrap(ctx, errors.ErrInternalDB, err)
+		return stack.Wrap(ctx, err, errors.ErrInternalDB)
 	}
 	return nil
 }
@@ -50,7 +51,7 @@ func (db *db) Create(ctx context.Context, userID, channelID string) error {
 // UpdateFilterByUserID to update filter user data.
 func (db *db) UpdateFilterByUserID(ctx context.Context, userID, filter string) error {
 	if _, err := db.db.UpdateOne(ctx, bson.D{{Key: "userId", Value: userID}}, bson.D{{Key: "$set", Value: bson.D{{Key: "filter", Value: filter}}}}); err != nil {
-		return errors.Wrap(ctx, errors.ErrInternalDB, err)
+		return stack.Wrap(ctx, err, errors.ErrInternalDB)
 	}
 	return nil
 }
@@ -58,7 +59,7 @@ func (db *db) UpdateFilterByUserID(ctx context.Context, userID, filter string) e
 // UpdateCategoryByUserID to update category user data.
 func (db *db) UpdateCategoryByUserID(ctx context.Context, userID, category string) error {
 	if _, err := db.db.UpdateOne(ctx, bson.D{{Key: "userId", Value: userID}}, bson.D{{Key: "$set", Value: bson.D{{Key: "category", Value: category}}}}); err != nil {
-		return errors.Wrap(ctx, errors.ErrInternalDB, err)
+		return stack.Wrap(ctx, err, errors.ErrInternalDB)
 	}
 	return nil
 }
@@ -66,7 +67,7 @@ func (db *db) UpdateCategoryByUserID(ctx context.Context, userID, category strin
 // UpdateQueriesByUserID to update queries user data.
 func (db *db) UpdateQueriesByUserID(ctx context.Context, userID string, queries []string) error {
 	if _, err := db.db.UpdateOne(ctx, bson.D{{Key: "userId", Value: userID}}, bson.D{{Key: "$set", Value: bson.D{{Key: "queries", Value: queries}}}}); err != nil {
-		return errors.Wrap(ctx, errors.ErrInternalDB, err)
+		return stack.Wrap(ctx, err, errors.ErrInternalDB)
 	}
 	return nil
 }
@@ -74,7 +75,7 @@ func (db *db) UpdateQueriesByUserID(ctx context.Context, userID string, queries 
 // UpdateSubscribeByUserID to update subscribe user data.
 func (db *db) UpdateSubscribeByUserID(ctx context.Context, userID string, subscribe bool) error {
 	if _, err := db.db.UpdateOne(ctx, bson.D{{Key: "userId", Value: userID}}, bson.D{{Key: "$set", Value: bson.D{{Key: "subscribe", Value: subscribe}}}}); err != nil {
-		return errors.Wrap(ctx, errors.ErrInternalDB, err)
+		return stack.Wrap(ctx, err, errors.ErrInternalDB)
 	}
 	return nil
 }
@@ -83,12 +84,12 @@ func (db *db) UpdateSubscribeByUserID(ctx context.Context, userID string, subscr
 func (db *db) GetSubscribedUsers(ctx context.Context) ([]*entity.User, error) {
 	cursor, err := db.db.Find(ctx, bson.D{{Key: "subscribe", Value: true}})
 	if err != nil {
-		return nil, err
+		return nil, stack.Wrap(ctx, err, errors.ErrInternalDB)
 	}
 
 	var users []user
-	if err = cursor.All(ctx, &users); err != nil {
-		return nil, err
+	if err := cursor.All(ctx, &users); err != nil {
+		return nil, stack.Wrap(ctx, err, errors.ErrInternalDB)
 	}
 
 	return db.toEntities(users), nil
