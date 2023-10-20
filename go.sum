@@ -76,6 +76,8 @@ github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe h1:iruDEfMl2E6f
 github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe/go.mod h1:wL8QJuTMNUDYhXwkmfOly8iTdp5TEcJFWZD2D7SIkUc=
 github.com/newrelic/go-agent/v3 v3.26.0 h1:xJkqiQgLtC3ys5zoBxD91ITm7sVHZNEF+7/mqmFjnl0=
 github.com/newrelic/go-agent/v3 v3.26.0/go.mod h1:sE2WdlLF3B/xI5HUuIHTa7Aht1gpcIY65pzaUoN1pJs=
+github.com/newrelic/go-agent/v3 v3.27.0 h1:Z3XB49d8FKjRcGzCyViCO9itBxiLPSpwjY1HlMvgamQ=
+github.com/newrelic/go-agent/v3 v3.27.0/go.mod h1:TUzePinDc0BMH4Sui66rl4SBe6yOKJ5X/bRJekwuAtM=
 github.com/newrelic/go-agent/v3/integrations/nrmongo v1.1.1 h1:tUZznhGpWPq0+Wkq/b2w0msWR1EzAdNMFS/lX0TkyBM=
 github.com/newrelic/go-agent/v3/integrations/nrmongo v1.1.1/go.mod h1:+uXCBUgxZbInCqCrJVFNueMNjMeiq8/2uY0A4ljHcpc=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
