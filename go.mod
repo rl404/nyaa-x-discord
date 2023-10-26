@@ -10,7 +10,7 @@ require (
 	github.com/mmcdole/gofeed v1.2.1
 	github.com/newrelic/go-agent/v3 v3.27.0
 	github.com/newrelic/go-agent/v3/integrations/nrmongo v1.1.1
-	github.com/rl404/fairy v0.24.0
+	github.com/rl404/fairy v0.25.0
 	github.com/spf13/cobra v1.7.0
 	go.mongodb.org/mongo-driver v1.12.1
 	golang.org/x/text v0.13.0
@@ -55,7 +55,7 @@ require (
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/sync v0.4.0 // indirect
 	golang.org/x/sys v0.13.0 // indirect
-	google.golang.org/genproto/googleapis/rpc v0.0.0-20231009173412-8bfb1ae86b6c // indirect
-	google.golang.org/grpc v1.58.3 // indirect
+	google.golang.org/genproto/googleapis/rpc v0.0.0-20231012201019-e917dd12ba7a // indirect
+	google.golang.org/grpc v1.59.0 // indirect
 	google.golang.org/protobuf v1.31.0 // indirect
 )
