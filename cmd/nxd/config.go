@@ -8,7 +8,6 @@ import (
 	"github.com/kelseyhightower/envconfig"
 	"github.com/newrelic/go-agent/v3/integrations/nrmongo"
 	"github.com/rl404/nyaa-x-discord/internal/utils"
-	"github.com/rl404/nyaa-x-discord/pkg/log"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -34,9 +33,9 @@ type dbConfig struct {
 }
 
 type logConfig struct {
-	Level log.LogLevel `envconfig:"LEVEL" default:"-1"`
-	JSON  bool         `envconfig:"JSON" default:"false"`
-	Color bool         `envconfig:"COLOR" default:"true"`
+	Level utils.LogLevel `envconfig:"LEVEL" default:"-1"`
+	JSON  bool           `envconfig:"JSON" default:"false"`
+	Color bool           `envconfig:"COLOR" default:"true"`
 }
 
 type newrelicConfig struct {
@@ -68,9 +67,7 @@ func getConfig() (*config, error) {
 	}
 
 	// Init global log.
-	if err := utils.InitLog(cfg.Log.Level, cfg.Log.JSON, cfg.Log.Color); err != nil {
-		return nil, err
-	}
+	utils.InitLog(cfg.Log.Level, cfg.Log.JSON, cfg.Log.Color)
 
 	return &cfg, nil
 }

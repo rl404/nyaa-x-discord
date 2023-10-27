@@ -9,7 +9,6 @@ import (
 	"github.com/rl404/fairy/errors/stack"
 	"github.com/rl404/nyaa-x-discord/internal/service"
 	"github.com/rl404/nyaa-x-discord/internal/utils"
-	"github.com/rl404/nyaa-x-discord/pkg/log"
 )
 
 // Bot contains functions for bot.
@@ -50,7 +49,7 @@ func (b *Bot) log(ctx context.Context) {
 	errStack := stack.Get(ctx)
 	if len(errStack) > 0 {
 		utils.Log(map[string]interface{}{
-			"level": log.ErrorLevel,
+			"level": utils.ErrorLevel,
 			"error": errStack,
 		})
 	}
