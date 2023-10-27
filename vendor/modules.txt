@@ -124,7 +124,7 @@ github.com/newrelic/go-agent/v3/newrelic
 # github.com/newrelic/go-agent/v3/integrations/nrmongo v1.1.1
 ## explicit; go 1.19
 github.com/newrelic/go-agent/v3/integrations/nrmongo
-# github.com/rl404/fairy v0.24.0
+# github.com/rl404/fairy v0.25.0
 ## explicit; go 1.21
 github.com/rl404/fairy/errors/stack
 github.com/rl404/fairy/limit
@@ -269,10 +269,10 @@ golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
-# google.golang.org/genproto/googleapis/rpc v0.0.0-20231009173412-8bfb1ae86b6c
+# google.golang.org/genproto/googleapis/rpc v0.0.0-20231012201019-e917dd12ba7a
 ## explicit; go 1.19
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.58.3
+# google.golang.org/grpc v1.59.0
 ## explicit; go 1.19
 google.golang.org/grpc
 google.golang.org/grpc/attributes
