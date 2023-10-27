@@ -8,7 +8,6 @@ import (
 	"github.com/rl404/fairy/errors/stack"
 	"github.com/rl404/nyaa-x-discord/internal/service"
 	"github.com/rl404/nyaa-x-discord/internal/utils"
-	"github.com/rl404/nyaa-x-discord/pkg/log"
 )
 
 // Cron contains functions for cron.
@@ -31,7 +30,7 @@ func (c *Cron) log(ctx context.Context) {
 	errStack := stack.Get(ctx)
 	if len(errStack) > 0 {
 		utils.Log(map[string]interface{}{
-			"level": log.ErrorLevel,
+			"level": utils.ErrorLevel,
 			"error": errStack,
 		})
 	}
