@@ -10,7 +10,7 @@ require (
 	github.com/mmcdole/gofeed v1.2.1
 	github.com/newrelic/go-agent/v3 v3.27.0
 	github.com/newrelic/go-agent/v3/integrations/nrmongo v1.1.1
-	github.com/rl404/fairy v0.25.0
+	github.com/rl404/fairy v0.25.1
 	github.com/spf13/cobra v1.7.0
 	go.mongodb.org/mongo-driver v1.12.1
 	golang.org/x/text v0.13.0
