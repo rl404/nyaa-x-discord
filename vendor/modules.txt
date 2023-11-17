@@ -117,7 +117,7 @@ github.com/newrelic/go-agent/v3/internal/logger
 github.com/newrelic/go-agent/v3/internal/sysinfo
 github.com/newrelic/go-agent/v3/internal/utilization
 github.com/newrelic/go-agent/v3/newrelic
-# github.com/newrelic/go-agent/v3/integrations/nrmongo v1.1.1
+# github.com/newrelic/go-agent/v3/integrations/nrmongo v1.1.2
 ## explicit; go 1.19
 github.com/newrelic/go-agent/v3/integrations/nrmongo
 # github.com/rl404/fairy v0.25.2
