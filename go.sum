@@ -14,6 +14,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/eapache/go-resiliency v1.4.0 h1:3OK9bWpPk5q6pbFAaYSEwD9CLUSHG8bnZuqX2yMt3B0=
 github.com/eapache/go-resiliency v1.4.0/go.mod h1:5yPzW0MIvSe0JDsv0v+DvcjEv2FyD6iZYSs1ZI+iQho=
+github.com/eapache/go-resiliency v1.5.0 h1:dRsaR00whmQD+SgVKlq/vCRFNgtEb5yppyeVos3Yce0=
+github.com/eapache/go-resiliency v1.5.0/go.mod h1:5yPzW0MIvSe0JDsv0v+DvcjEv2FyD6iZYSs1ZI+iQho=
 github.com/gabriel-vasile/mimetype v1.4.2 h1:w5qFW6JKBz9Y393Y4q372O9A7cUSequkh1Q7OhCmWKU=
 github.com/gabriel-vasile/mimetype v1.4.2/go.mod h1:zApsH/mKG4w07erKIaJPFiX0Tsq9BFQgN3qGY5GnNgA=
 github.com/go-chi/chi/v5 v5.0.10 h1:rLz5avzKpjqxrYwXNfmjkrYYXOyLJd37pz53UFHC6vk=
@@ -83,6 +85,8 @@ github.com/newrelic/go-agent/v3 v3.28.0 h1:zrDJpU6wp84VvU0uUM0ExuSFSRGcKfPvw4WME
 github.com/newrelic/go-agent/v3 v3.28.0/go.mod h1:qKzHfnXvk2XM0iOkBLMmeNckhUd4AGlI66vliWxp/Wk=
 github.com/newrelic/go-agent/v3 v3.28.1 h1:jJfangbTvuLsP+zWZo2EafACbZ9xvZfdDM8Ly15cPpo=
 github.com/newrelic/go-agent/v3 v3.28.1/go.mod h1:9utrgxlSryNqRrTvII2XBL+0lpofXbqXApvVWPpbzUg=
+github.com/newrelic/go-agent/v3 v3.29.0 h1:Bc1D3DoOkpJs6aIzhOjUp+yIKJ2RfZ+LMQemZOs9t9k=
+github.com/newrelic/go-agent/v3 v3.29.0/go.mod h1:9utrgxlSryNqRrTvII2XBL+0lpofXbqXApvVWPpbzUg=
 github.com/newrelic/go-agent/v3/integrations/nrmongo v1.1.1 h1:tUZznhGpWPq0+Wkq/b2w0msWR1EzAdNMFS/lX0TkyBM=
 github.com/newrelic/go-agent/v3/integrations/nrmongo v1.1.1/go.mod h1:+uXCBUgxZbInCqCrJVFNueMNjMeiq8/2uY0A4ljHcpc=
 github.com/newrelic/go-agent/v3/integrations/nrmongo v1.1.2 h1:GimXwAt30uLRg0jBQ+LQALcbboHOPnNfouO0L2cON8s=
