@@ -84,7 +84,7 @@ github.com/mattn/go-colorable
 # github.com/mattn/go-isatty v0.0.19
 ## explicit; go 1.15
 github.com/mattn/go-isatty
-# github.com/mmcdole/gofeed v1.2.1
+# github.com/mmcdole/gofeed v1.3.0
 ## explicit; go 1.19
 github.com/mmcdole/gofeed
 github.com/mmcdole/gofeed/atom
@@ -92,7 +92,7 @@ github.com/mmcdole/gofeed/extensions
 github.com/mmcdole/gofeed/internal/shared
 github.com/mmcdole/gofeed/json
 github.com/mmcdole/gofeed/rss
-# github.com/mmcdole/goxpp v1.1.0
+# github.com/mmcdole/goxpp v1.1.1-0.20240225020742-a0c311522b23
 ## explicit; go 1.19
 github.com/mmcdole/goxpp
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
