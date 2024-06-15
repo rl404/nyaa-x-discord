@@ -12,7 +12,7 @@ require (
 	github.com/newrelic/go-agent/v3/integrations/nrmongo v1.1.3
 	github.com/rl404/fairy v0.25.2
 	github.com/spf13/cobra v1.8.1
-	go.mongodb.org/mongo-driver v1.15.0
+	go.mongodb.org/mongo-driver v1.15.1
 	golang.org/x/text v0.16.0
 )
 
