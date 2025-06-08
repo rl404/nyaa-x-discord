@@ -7,7 +7,7 @@ WORKDIR /nxd/cmd/nxd
 RUN CGO_ENABLED=0 go build -a -installsuffix cgo -o nxd
 
 # New stage from scratch
-FROM alpine:3.21
+FROM alpine:3.22
 LABEL stage="nxd_binary"
 RUN apk add --no-cache tzdata
 COPY --from=go_builder /nxd/cmd/nxd/nxd /cmd/nxd/nxd
