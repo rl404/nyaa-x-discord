@@ -2,17 +2,17 @@ package db
 
 import (
 	"github.com/rl404/nyaa-x-discord/internal/domain/user/entity"
-	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 type user struct {
-	ID        primitive.ObjectID `bson:"_id,omitempty"`
-	UserID    string             `bson:"userId"`
-	ChannelID string             `bson:"channelId"`
-	Filter    string             `bson:"filter"`
-	Category  string             `bson:"category"`
-	Queries   []string           `bson:"queries"`
-	Subscribe bool               `bson:"subscribe"`
+	ID        bson.ObjectID `bson:"_id,omitempty"`
+	UserID    string        `bson:"userId"`
+	ChannelID string        `bson:"channelId"`
+	Filter    string        `bson:"filter"`
+	Category  string        `bson:"category"`
+	Queries   []string      `bson:"queries"`
+	Subscribe bool          `bson:"subscribe"`
 }
 
 func (u *user) toEntity() *entity.User {
