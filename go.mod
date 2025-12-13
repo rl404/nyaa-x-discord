@@ -12,8 +12,8 @@ require (
 	github.com/newrelic/go-agent/v3/integrations/nrmongo-v2 v1.0.1
 	github.com/rl404/fairy v0.26.1
 	github.com/spf13/cobra v1.10.2
-	go.mongodb.org/mongo-driver/v2 v2.4.0
-	golang.org/x/text v0.31.0
+	go.mongodb.org/mongo-driver/v2 v2.4.1
+	golang.org/x/text v0.32.0
 )
 
 require (
@@ -48,7 +48,7 @@ require (
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	golang.org/x/crypto v0.45.0 // indirect
 	golang.org/x/net v0.47.0 // indirect
-	golang.org/x/sync v0.18.0 // indirect
+	golang.org/x/sync v0.19.0 // indirect
 	golang.org/x/sys v0.38.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250728155136-f173205681a0 // indirect
 	google.golang.org/grpc v1.74.2 // indirect
