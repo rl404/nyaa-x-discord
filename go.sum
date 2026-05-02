@@ -81,6 +81,8 @@ github.com/newrelic/go-agent/v3 v3.43.1 h1:ANp6NxTloZjlU20RbOUy2/g5fLb4hf70DRkNj
 github.com/newrelic/go-agent/v3 v3.43.1/go.mod h1:MFXnCId5xXMIJI6A/kbkg0DO48EVTsKcmNijMYphzTg=
 github.com/newrelic/go-agent/v3 v3.43.2 h1:I8M0Do/sPtbT0daCMrxc9G6GeST+eDgsIpRHFAFRdOg=
 github.com/newrelic/go-agent/v3 v3.43.2/go.mod h1:MFXnCId5xXMIJI6A/kbkg0DO48EVTsKcmNijMYphzTg=
+github.com/newrelic/go-agent/v3 v3.43.3 h1:0A6DkUBYK2bidV6jJDJ1SD2XkRlg976nl+SiEqkGTUQ=
+github.com/newrelic/go-agent/v3 v3.43.3/go.mod h1:MFXnCId5xXMIJI6A/kbkg0DO48EVTsKcmNijMYphzTg=
 github.com/newrelic/go-agent/v3/integrations/nrmongo-v2 v1.0.1 h1:hWGdGY/bPoqkiFhkCqZuIiJgQbur9wF+0Ck3F2/yuAI=
 github.com/newrelic/go-agent/v3/integrations/nrmongo-v2 v1.0.1/go.mod h1:jz2hRjQ6VkG/pNbFju9o11SGHVA1basYbO6XDq7Nxn0=
 github.com/pkg/errors v0.9.1/go.mod h1:bwawxfHBFNV+L2hUp1rHADufV3IMtnDRdf1r5NINEl0=
@@ -117,6 +119,8 @@ go.mongodb.org/mongo-driver/v2 v2.5.0 h1:yXUhImUjjAInNcpTcAlPHiT7bIXhshCTL3jVBkF
 go.mongodb.org/mongo-driver/v2 v2.5.0/go.mod h1:yOI9kBsufol30iFsl1slpdq1I0eHPzybRWdyYUs8K/0=
 go.mongodb.org/mongo-driver/v2 v2.5.1 h1:j2U/Qp+wvueSpqitLCSZPT/+ZpVc1xzuwdHWwl7d8ro=
 go.mongodb.org/mongo-driver/v2 v2.5.1/go.mod h1:yOI9kBsufol30iFsl1slpdq1I0eHPzybRWdyYUs8K/0=
+go.mongodb.org/mongo-driver/v2 v2.6.0 h1:b9sJOYrkmt4l8bY43ZenFBcPlhYIjaOfYHLtbB/5qi8=
+go.mongodb.org/mongo-driver/v2 v2.6.0/go.mod h1:yOI9kBsufol30iFsl1slpdq1I0eHPzybRWdyYUs8K/0=
 go.opentelemetry.io/auto/sdk v1.2.1 h1:jXsnJ4Lmnqd11kwkBV2LgLoFMZKizbCi5fNZ/ipaZ64=
 go.opentelemetry.io/auto/sdk v1.2.1/go.mod h1:KRTj+aOaElaLi+wW1kO/DZRXwkF4C5xPbEe3ZiIhN7Y=
 go.opentelemetry.io/otel v1.39.0 h1:8yPrr/S0ND9QEfTfdP9V+SiwT4E0G7Y5MO7p85nis48=
