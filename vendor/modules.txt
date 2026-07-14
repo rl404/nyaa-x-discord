@@ -1,9 +1,7 @@
 # github.com/PuerkitoBio/goquery v1.8.0
 ## explicit; go 1.13
-github.com/PuerkitoBio/goquery
 # github.com/andybalholm/cascadia v1.3.1
 ## explicit; go 1.16
-github.com/andybalholm/cascadia
 # github.com/bwmarrin/discordgo v0.29.0
 ## explicit; go 1.13
 github.com/bwmarrin/discordgo
@@ -51,7 +49,6 @@ github.com/inconshreveable/mousetrap
 github.com/joho/godotenv
 # github.com/json-iterator/go v1.1.12
 ## explicit; go 1.12
-github.com/json-iterator/go
 # github.com/kelseyhightower/envconfig v1.4.0
 ## explicit
 github.com/kelseyhightower/envconfig
@@ -78,8 +75,8 @@ github.com/mattn/go-colorable
 # github.com/mattn/go-isatty v0.0.20
 ## explicit; go 1.15
 github.com/mattn/go-isatty
-# github.com/mmcdole/gofeed v1.3.0
-## explicit; go 1.19
+# github.com/mmcdole/gofeed v1.4.0
+## explicit; go 1.25.0
 github.com/mmcdole/gofeed
 github.com/mmcdole/gofeed/atom
 github.com/mmcdole/gofeed/extensions
@@ -88,13 +85,13 @@ github.com/mmcdole/gofeed/json
 github.com/mmcdole/gofeed/rss
 # github.com/mmcdole/goxpp v1.1.1-0.20240225020742-a0c311522b23
 ## explicit; go 1.19
-github.com/mmcdole/goxpp
+# github.com/mmcdole/goxpp/v2 v2.0.0
+## explicit; go 1.21
+github.com/mmcdole/goxpp/v2
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
 ## explicit
-github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.2
 ## explicit; go 1.12
-github.com/modern-go/reflect2
 # github.com/newrelic/go-agent/v3 v3.44.1
 ## explicit; go 1.25
 github.com/newrelic/go-agent/v3/internal
@@ -151,7 +148,7 @@ github.com/xdg-go/stringprep
 # github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78
 ## explicit; go 1.17
 github.com/youmark/pkcs8
-# go.mongodb.org/mongo-driver/v2 v2.7.0
+# go.mongodb.org/mongo-driver/v2 v2.8.0
 ## explicit; go 1.19
 go.mongodb.org/mongo-driver/v2/bson
 go.mongodb.org/mongo-driver/v2/event
@@ -202,7 +199,7 @@ go.mongodb.org/mongo-driver/v2/x/mongo/driver/operation
 go.mongodb.org/mongo-driver/v2/x/mongo/driver/session
 go.mongodb.org/mongo-driver/v2/x/mongo/driver/topology
 go.mongodb.org/mongo-driver/v2/x/mongo/driver/wiremessage
-# golang.org/x/crypto v0.52.0
+# golang.org/x/crypto v0.53.0
 ## explicit; go 1.25.0
 golang.org/x/crypto/internal/alias
 golang.org/x/crypto/internal/poly1305
@@ -212,7 +209,7 @@ golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/salsa20/salsa
 golang.org/x/crypto/scrypt
 golang.org/x/crypto/sha3
-# golang.org/x/net v0.55.0
+# golang.org/x/net v0.56.0
 ## explicit; go 1.25.0
 golang.org/x/net/html
 golang.org/x/net/html/atom
@@ -229,7 +226,7 @@ golang.org/x/net/trace
 ## explicit; go 1.25.0
 golang.org/x/sync/errgroup
 golang.org/x/sync/singleflight
-# golang.org/x/sys v0.45.0
+# golang.org/x/sys v0.46.0
 ## explicit; go 1.25.0
 golang.org/x/sys/cpu
 golang.org/x/sys/unix
