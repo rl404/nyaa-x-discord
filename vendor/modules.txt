@@ -1,7 +1,3 @@
-# github.com/PuerkitoBio/goquery v1.8.0
-## explicit; go 1.13
-# github.com/andybalholm/cascadia v1.3.1
-## explicit; go 1.16
 # github.com/bwmarrin/discordgo v0.29.0
 ## explicit; go 1.13
 github.com/bwmarrin/discordgo
@@ -47,8 +43,6 @@ github.com/inconshreveable/mousetrap
 # github.com/joho/godotenv v1.5.1
 ## explicit; go 1.12
 github.com/joho/godotenv
-# github.com/json-iterator/go v1.1.12
-## explicit; go 1.12
 # github.com/kelseyhightower/envconfig v1.4.0
 ## explicit
 github.com/kelseyhightower/envconfig
@@ -83,15 +77,9 @@ github.com/mmcdole/gofeed/extensions
 github.com/mmcdole/gofeed/internal/shared
 github.com/mmcdole/gofeed/json
 github.com/mmcdole/gofeed/rss
-# github.com/mmcdole/goxpp v1.1.1-0.20240225020742-a0c311522b23
-## explicit; go 1.19
 # github.com/mmcdole/goxpp/v2 v2.0.0
 ## explicit; go 1.21
 github.com/mmcdole/goxpp/v2
-# github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
-## explicit
-# github.com/modern-go/reflect2 v1.0.2
-## explicit; go 1.12
 # github.com/newrelic/go-agent/v3 v3.44.1
 ## explicit; go 1.25
 github.com/newrelic/go-agent/v3/internal
@@ -255,11 +243,11 @@ golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
-# google.golang.org/genproto/googleapis/rpc v0.0.0-20260120221211-b8f7ae30c516
-## explicit; go 1.24.0
+# google.golang.org/genproto/googleapis/rpc v0.0.0-20260414002931-afd174a4e478
+## explicit; go 1.25.0
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.80.0
-## explicit; go 1.24.0
+# google.golang.org/grpc v1.82.1
+## explicit; go 1.25.0
 google.golang.org/grpc
 google.golang.org/grpc/attributes
 google.golang.org/grpc/backoff
@@ -279,13 +267,13 @@ google.golang.org/grpc/credentials/insecure
 google.golang.org/grpc/encoding
 google.golang.org/grpc/encoding/internal
 google.golang.org/grpc/encoding/proto
+google.golang.org/grpc/experimental/balancer/weight
 google.golang.org/grpc/experimental/stats
 google.golang.org/grpc/grpclog
 google.golang.org/grpc/grpclog/internal
 google.golang.org/grpc/internal
 google.golang.org/grpc/internal/backoff
 google.golang.org/grpc/internal/balancer/gracefulswitch
-google.golang.org/grpc/internal/balancer/weight
 google.golang.org/grpc/internal/balancerload
 google.golang.org/grpc/internal/binarylog
 google.golang.org/grpc/internal/buffer
@@ -311,7 +299,9 @@ google.golang.org/grpc/internal/stats
 google.golang.org/grpc/internal/status
 google.golang.org/grpc/internal/syscall
 google.golang.org/grpc/internal/transport
+google.golang.org/grpc/internal/transport/internal
 google.golang.org/grpc/internal/transport/networktype
+google.golang.org/grpc/internal/transport/readyreader
 google.golang.org/grpc/keepalive
 google.golang.org/grpc/mem
 google.golang.org/grpc/metadata
