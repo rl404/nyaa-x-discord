@@ -4,16 +4,18 @@ github.com/bwmarrin/discordgo
 # github.com/eapache/go-resiliency v1.7.0
 ## explicit; go 1.13
 github.com/eapache/go-resiliency/retrier
-# github.com/gabriel-vasile/mimetype v1.4.8
-## explicit; go 1.20
+# github.com/gabriel-vasile/mimetype v1.4.13
+## explicit; go 1.21
 github.com/gabriel-vasile/mimetype
 github.com/gabriel-vasile/mimetype/internal/charset
+github.com/gabriel-vasile/mimetype/internal/csv
 github.com/gabriel-vasile/mimetype/internal/json
 github.com/gabriel-vasile/mimetype/internal/magic
-# github.com/go-chi/chi/v5 v5.2.4
-## explicit; go 1.22
+github.com/gabriel-vasile/mimetype/internal/markup
+github.com/gabriel-vasile/mimetype/internal/scan
+# github.com/go-chi/chi/v5 v5.3.1
+## explicit; go 1.23
 github.com/go-chi/chi/v5
-github.com/go-chi/chi/v5/middleware
 # github.com/go-playground/locales v0.14.1
 ## explicit; go 1.17
 github.com/go-playground/locales
@@ -25,8 +27,8 @@ github.com/go-playground/mold/v4/modifiers
 # github.com/go-playground/universal-translator v0.18.1
 ## explicit; go 1.18
 github.com/go-playground/universal-translator
-# github.com/go-playground/validator/v10 v10.27.0
-## explicit; go 1.20
+# github.com/go-playground/validator/v10 v10.30.3
+## explicit; go 1.25.0
 github.com/go-playground/validator/v10
 # github.com/gorilla/websocket v1.4.2
 ## explicit; go 1.12
@@ -46,8 +48,8 @@ github.com/joho/godotenv
 # github.com/kelseyhightower/envconfig v1.4.0
 ## explicit
 github.com/kelseyhightower/envconfig
-# github.com/klauspost/compress v1.18.0
-## explicit; go 1.22
+# github.com/klauspost/compress v1.19.1
+## explicit; go 1.24
 github.com/klauspost/compress
 github.com/klauspost/compress/fse
 github.com/klauspost/compress/huff0
@@ -63,13 +65,13 @@ github.com/klauspost/compress/zstd/internal/xxhash
 ## explicit; go 1.18
 github.com/leodido/go-urn
 github.com/leodido/go-urn/scim/schema
-# github.com/mattn/go-colorable v0.1.14
+# github.com/mattn/go-colorable v0.1.15
 ## explicit; go 1.18
 github.com/mattn/go-colorable
 # github.com/mattn/go-isatty v0.0.20
 ## explicit; go 1.15
 github.com/mattn/go-isatty
-# github.com/mmcdole/gofeed v1.4.0
+# github.com/mmcdole/gofeed v1.4.2
 ## explicit; go 1.25.0
 github.com/mmcdole/gofeed
 github.com/mmcdole/gofeed/atom
@@ -80,7 +82,7 @@ github.com/mmcdole/gofeed/rss
 # github.com/mmcdole/goxpp/v2 v2.0.0
 ## explicit; go 1.21
 github.com/mmcdole/goxpp/v2
-# github.com/newrelic/go-agent/v3 v3.44.1
+# github.com/newrelic/go-agent/v3 v3.44.2
 ## explicit; go 1.25
 github.com/newrelic/go-agent/v3/internal
 github.com/newrelic/go-agent/v3/internal/cat
@@ -94,8 +96,8 @@ github.com/newrelic/go-agent/v3/newrelic
 # github.com/newrelic/go-agent/v3/integrations/nrmongo-v2 v1.0.2
 ## explicit; go 1.25
 github.com/newrelic/go-agent/v3/integrations/nrmongo-v2
-# github.com/rl404/fairy v0.26.1
-## explicit; go 1.24.5
+# github.com/rl404/fairy v0.27.0
+## explicit; go 1.25.8
 github.com/rl404/fairy/errors/stack
 github.com/rl404/fairy/limit
 github.com/rl404/fairy/limit/atomic
@@ -107,8 +109,8 @@ github.com/rl404/fairy/log/zerolog
 github.com/rl404/fairy/pubsub
 github.com/rl404/fairy/validation
 github.com/rl404/fairy/validation/playground
-# github.com/rs/zerolog v1.34.0
-## explicit; go 1.15
+# github.com/rs/zerolog v1.35.1
+## explicit; go 1.23
 github.com/rs/zerolog
 github.com/rs/zerolog/internal/cbor
 github.com/rs/zerolog/internal/json
@@ -187,7 +189,7 @@ go.mongodb.org/mongo-driver/v2/x/mongo/driver/operation
 go.mongodb.org/mongo-driver/v2/x/mongo/driver/session
 go.mongodb.org/mongo-driver/v2/x/mongo/driver/topology
 go.mongodb.org/mongo-driver/v2/x/mongo/driver/wiremessage
-# golang.org/x/crypto v0.53.0
+# golang.org/x/crypto v0.54.0
 ## explicit; go 1.25.0
 golang.org/x/crypto/internal/alias
 golang.org/x/crypto/internal/poly1305
@@ -197,7 +199,7 @@ golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/salsa20/salsa
 golang.org/x/crypto/scrypt
 golang.org/x/crypto/sha3
-# golang.org/x/net v0.56.0
+# golang.org/x/net v0.57.0
 ## explicit; go 1.25.0
 golang.org/x/net/html
 golang.org/x/net/html/atom
@@ -214,12 +216,12 @@ golang.org/x/net/trace
 ## explicit; go 1.25.0
 golang.org/x/sync/errgroup
 golang.org/x/sync/singleflight
-# golang.org/x/sys v0.46.0
+# golang.org/x/sys v0.47.0
 ## explicit; go 1.25.0
 golang.org/x/sys/cpu
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/text v0.40.0
+# golang.org/x/text v0.41.0
 ## explicit; go 1.25.0
 golang.org/x/text/cases
 golang.org/x/text/encoding
@@ -243,10 +245,10 @@ golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
-# google.golang.org/genproto/googleapis/rpc v0.0.0-20260414002931-afd174a4e478
+# google.golang.org/genproto/googleapis/rpc v0.0.0-20260807164820-c8921c73eeea
 ## explicit; go 1.25.0
 google.golang.org/genproto/googleapis/rpc/status
-# google.golang.org/grpc v1.82.1
+# google.golang.org/grpc v1.83.0
 ## explicit; go 1.25.0
 google.golang.org/grpc
 google.golang.org/grpc/attributes
