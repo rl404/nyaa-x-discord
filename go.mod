@@ -1,6 +1,6 @@
 module github.com/rl404/nyaa-x-discord
 
-go 1.25.8
+go 1.26.0
 
 require (
 	github.com/bwmarrin/discordgo v0.29.0
@@ -12,8 +12,8 @@ require (
 	github.com/newrelic/go-agent/v3/integrations/nrmongo-v2 v1.0.2
 	github.com/rl404/fairy v0.27.0
 	github.com/spf13/cobra v1.10.2
-	go.mongodb.org/mongo-driver/v2 v2.8.2
-	golang.org/x/text v0.41.0
+	go.mongodb.org/mongo-driver/v2 v2.9.1
+	golang.org/x/text v0.42.0
 )
 
 require (
@@ -27,7 +27,7 @@ require (
 	github.com/gosimple/slug v1.15.0 // indirect
 	github.com/gosimple/unidecode v1.0.1 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
-	github.com/klauspost/compress v1.19.1 // indirect
+	github.com/klauspost/compress v1.19.2 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mattn/go-colorable v0.1.15 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
@@ -42,7 +42,7 @@ require (
 	github.com/youmark/pkcs8 v0.0.0-20240726163527-a2c0da244d78 // indirect
 	golang.org/x/crypto v0.55.0 // indirect
 	golang.org/x/net v0.58.0 // indirect
-	golang.org/x/sync v0.22.0 // indirect
+	golang.org/x/sync v0.23.0 // indirect
 	golang.org/x/sys v0.47.0 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20260807164820-c8921c73eeea // indirect
 	google.golang.org/grpc v1.83.2 // indirect
