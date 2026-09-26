@@ -498,9 +498,12 @@ func firstString(entries []string) string {
 }
 
 // personFromText builds a Person from a free-form author string like
-// "Example Name (example@site.com)".
+// "Example Name (example@site.com)", or returns nil when the text is blank.
 func personFromText(text string) *Person {
 	name, address := shared.ParseNameAddress(text)
+	if name == "" && address == "" {
+		return nil
+	}
 	return &Person{Name: name, Email: address}
 }
 
@@ -679,7 +682,7 @@ func atomPersons(persons []*atom.Person) []*Person {
 	}
 	out := make([]*Person, 0, len(persons))
 	for _, p := range persons {
-		out = append(out, &Person{Name: p.Name, Email: p.Email})
+		out = append(out, &Person{Name: p.Name, Email: p.Email, URL: p.URI})
 	}
 	return out
 }
@@ -741,7 +744,7 @@ func (t *DefaultJSONTranslator) Translate(feed interface{}) (*Feed, error) {
 	}
 
 	if jsonFeed.Author != nil {
-		result.Author = personFromText(jsonFeed.Author.Name)
+		result.Author = jsonPerson(jsonFeed.Author)
 	}
 	if jsonFeed.Authors != nil {
 		result.Authors = jsonPersons(jsonFeed.Authors)
@@ -815,7 +818,7 @@ func (t *DefaultJSONTranslator) translateFeedItem(jsonItem *json.Item) *Item {
 	}
 
 	if jsonItem.Author != nil {
-		item.Author = personFromText(jsonItem.Author.Name)
+		item.Author = jsonPerson(jsonItem.Author)
 	}
 	if jsonItem.Authors != nil {
 		item.Authors = jsonPersons(jsonItem.Authors)
@@ -844,7 +847,7 @@ func (t *DefaultJSONTranslator) translateFeedItem(jsonItem *json.Item) *Item {
 
 	// TODO ExternalURL is missing in global Feed
 	// TODO BannerImage is missing in global Feed
-	// Author.URL and Author.Avatar are missing in global feed
+	// Author.Avatar is missing in global feed
 	return item
 }
 
@@ -853,7 +856,13 @@ func (t *DefaultJSONTranslator) translateFeedItem(jsonItem *json.Item) *Item {
 func jsonPersons(authors []*json.Author) []*Person {
 	out := make([]*Person, 0, len(authors))
 	for _, a := range authors {
-		out = append(out, personFromText(a.Name))
+		out = append(out, jsonPerson(a))
 	}
 	return out
+}
+
+// jsonPerson preserves the author URL alongside the parsed name and email.
+func jsonPerson(author *json.Author) *Person {
+	name, address := shared.ParseNameAddress(author.Name)
+	return &Person{Name: name, Email: address, URL: author.URL}
 }
