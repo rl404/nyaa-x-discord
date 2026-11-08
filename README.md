@@ -1,5 +1,10 @@
 # Nyaa-X-Discord
 
+![License: MIT](https://img.shields.io/github/license/rl404/nyaa-x-discord)
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/rl404/nyaa-x-discord)
+[![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/rl404/nyaa-x-discord)](https://hub.docker.com/r/rl404/nyaa-x-discord)
+[![CI](https://github.com/rl404/nyaa-x-discord/actions/workflows/ci.yml/badge.svg?event=push)](https://github.com/rl404/nyaa-x-discord/actions/workflows/ci.yml)
+
 Discord bot that will notify you via DM if there is new [Nyaa](https://nyaa.si) update according to your filter/query.
 
 This bot is created because my favorite anime fansubs group has disbanded and I want to keep up-to-date with new anime episodes in one place.
@@ -14,9 +19,11 @@ This bot is created because my favorite anime fansubs group has disbanded and I 
 ## Steps
 
 1. Git clone this repo.
+
    ```bash
    git clone github.com/rl404/nyaa-x-discord
    ```
+
 2. Rename `.env.sample` to `.env` and modify according to your configuration.
 
    ```properties
@@ -54,7 +61,7 @@ This bot is created because my favorite anime fansubs group has disbanded and I 
 5. DM the bot `!ping`.
 6. You will get welcome message from the bot.
 
-   ```
+   ```mk
    Welcome rl404
    It looks like this is your first time using this bot.
 
@@ -76,7 +83,7 @@ This bot is created because my favorite anime fansubs group has disbanded and I 
 
 ## Bot Commands
 
-```
+```mk
 !help
 Show all command list.
 

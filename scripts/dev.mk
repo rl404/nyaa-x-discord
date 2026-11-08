@@ -9,7 +9,7 @@ CMD_PATH    := ./cmd/nxd
 BINARY_NAME := nxd
 BINARY_PATH := $(CMD_PATH)/$(BINARY_NAME)
 
-.PHONY: fmt clean lint install-linter build bot cron-check
+.PHONY: fmt clean lint install-linter build bot cron
 
 ##@ Tools
 
@@ -34,5 +34,5 @@ build: clean fmt ## Build the project executable binary.
 bot: build ## Build and run the bot.
 	@$(BINARY_PATH) bot
 
-cron-check: build ## Build and run cron check.
+cron: build ## Build and run cron check.
 	@$(BINARY_PATH) cron check

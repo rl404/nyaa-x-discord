@@ -4,7 +4,7 @@ COMPOSE ?= docker compose
 # Compose files helper.
 compose = $(COMPOSE) -f deployment/compose.$(1).yml -p nxd-$(2)
 
-.PHONY: docker-lint docker-build docker-bot docker-cron-check docker-stop
+.PHONY: docker-lint docker-build docker-bot docker-cron docker-stop
 
 ##@ Docker Tools
 
@@ -22,7 +22,7 @@ docker-bot: ## Start bot container.
 	@$(call compose,bot,bot) up -d
 	@$(call compose,bot,bot) logs --follow --tail 20
 
-docker-cron-check: ## Start cron check container.
+docker-cron: ## Start cron check container.
 	@$(call compose,cron-check,cron-check) up
 	@$(call compose,cron-check,cron-check) rm -f
 
