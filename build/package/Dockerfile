@@ -9,7 +9,7 @@ RUN CGO_ENABLED=0 go build -mod=vendor -ldflags="-s -w" -o nxd
 # New stage from scratch
 FROM alpine:3.24.3
 LABEL stage="nxd_binary"
-RUN apk add --no-cache ca-tzdata && adduser -D -u 10001 nxd
+RUN apk add --no-cache tzdata && adduser -D -u 10001 nxd
 COPY --from=go_builder /nxd/cmd/nxd/nxd /usr/local/bin/nxd
 WORKDIR /home/nxd
 USER nxd
