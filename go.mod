@@ -1,6 +1,6 @@
 module github.com/rl404/nyaa-x-discord
 
-go 1.26.0
+go 1.27.3
 
 require (
 	github.com/bwmarrin/discordgo v0.29.0
