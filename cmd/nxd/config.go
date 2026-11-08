@@ -47,7 +47,7 @@ type cronConfig struct {
 	Interval time.Duration `envconfig:"INTERVAL" validate:"required,gt=0" mod:"default=10m"`
 }
 
-const envPath = "../../.env"
+const envPath = ".env"
 const envPrefix = "NXD"
 
 func getConfig() (*config, error) {
